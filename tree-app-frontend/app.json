@@ -1,31 +1,39 @@
 {
   "expo": {
-    "name": "Tree Tracker",
-    "slug": "tree-tracker",
+    "name": "Vriksha Netra",
+    "slug": "vriksha-netra",
     "version": "1.0.0",
     "orientation": "portrait",
     "scheme": "vrikshanetra",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "splash": {
-      "backgroundColor": "#2d5a27"
+      "backgroundColor": "#020906"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "android": {
-      "package": "com.aksharbharati.treetracker",
+      "package": "com.aksharbharati.vrikshanetra",
       "permissions": [
-        "CAMERA"
+        "CAMERA",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
       ],
       "adaptiveIcon": {
-        "backgroundColor": "#2d5a27"
+        "backgroundColor": "#020906"
       }
     },
     "plugins": [
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow Tree Tracker to access your camera to identify and log trees."
+          "cameraPermission": "Allow Vriksha Netra to access your camera to identify and log trees."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Vriksha Netra to access your location to geotag planted trees."
         }
       ],
       "expo-web-browser"
