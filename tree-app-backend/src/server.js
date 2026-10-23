@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
+const mongoose = require('mongoose');
 const connectDB = require('./config/db');
 const seedDatabase = require('./config/seed');
 const authRoutes = require('./routes/authRoutes');
@@ -172,14 +173,13 @@ app.put('/api/admin/review/:id', protect, adminOnly, async (req, res) => {
 });
 
 // ─── Health check endpoint ──────────────────────────────────────────────────
-const mongoose = require('mongoose');
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
     environment: process.env.NODE_ENV || 'development',
-    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    database: mongoose.connection.readyState === 1 ? 'connected' : 'connecting',
   });
 });
 
@@ -195,26 +195,22 @@ app.use((err, req, res, next) => {
 });
 
 // ─── Start Server ───────────────────────────────────────────────────────────
-const startServer = async () => {
-  // Connect to MongoDB Atlas
-  const dbConnected = await connectDB();
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`\n🌿 Vriksha Netra server running on port ${PORT}`);
+  console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`   Health check: http://localhost:${PORT}/api/health\n`);
 
-  if (dbConnected) {
-    // Seed default data on first run
-    await seedDatabase();
-    console.log('✅ MongoDB Atlas is ready');
-  } else {
-    console.warn('⚠️  Running without MongoDB — some features may not work');
-  }
-
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`\n🌿 Vriksha Netra server running on port ${PORT}`);
-    console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`   Database: ${dbConnected ? 'MongoDB Atlas ☁️' : 'Offline ⚠️'}`);
-    console.log(`   Health check: http://localhost:${PORT}/api/health\n`);
+  // Connect to MongoDB Atlas in background
+  connectDB().then(async (dbConnected) => {
+    if (dbConnected) {
+      await seedDatabase();
+      console.log('✅ MongoDB Atlas is ready');
+    } else {
+      console.warn('⚠️  Running without MongoDB — some features may not work');
+    }
+  }).catch((err) => {
+    console.error('Database connection error:', err.message);
   });
-};
-
-startServer();
+});
 
