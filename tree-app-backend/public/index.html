@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Akshar Bharati NGO — Advanced Tree Plantation Tracker with AI-powered species identification. Log, track, and celebrate every tree." />
+  <meta name="theme-color" content="#050d09" />
+  <title>🌳 Vriksha Netra — AI Tree Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-deep: #030a06;
+      --bg-surface: #071510;
+      --bg-card: rgba(10, 28, 18, 0.55);
+      --bg-card-hover: rgba(18, 45, 28, 0.75);
+      --bg-glass: rgba(255,255,255,0.035);
+      --bg-glass-hover: rgba(255,255,255,0.07);
+      --bg-input: rgba(255,255,255,0.04);
+      --accent: #4ade80;
+      --accent-bright: #86efac;
+      --accent-dim: #16a34a;
+      --accent-glow: rgba(74, 222, 128, 0.2);
+      --accent2: #34d399;
+      --accent3: #2dd4bf;
+      --gold: #fbbf24;
+      --silver: #94a3b8;
+      --bronze: #d97706;
+      --text: #e8f5e9;
+      --text-secondary: rgba(232,245,233,0.5);
+      --text-muted: rgba(232,245,233,0.25);
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --info: #60a5fa;
+      --purple: #a78bfa;
+      --pink: #f472b6;
+      --border: rgba(255,255,255,0.06);
+      --border-accent: rgba(74,222,128,0.12);
+      --radius: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --radius-xs: 8px;
+      --font: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --shadow: 0 8px 32px rgba(0,0,0,0.5);
+      --shadow-lg: 0 24px 80px rgba(0,0,0,0.6);
+      --shadow-glow: 0 0 40px var(--accent-glow);
+      --ease: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg-deep);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ═══ AURORA BACKGROUND ═══ */
+    .aurora {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      overflow: hidden;
+    }
+    .aurora-blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(100px); opacity: 0.15;
+      animation: auroraFloat 20s ease-in-out infinite alternate;
+    }
+    .aurora-blob:nth-child(1) {
+      width: 600px; height: 600px; top: -10%; left: -5%;
+      background: radial-gradient(circle, #16a34a, #065f46);
+      animation-duration: 25s;
+    }
+    .aurora-blob:nth-child(2) {
+      width: 500px; height: 500px; top: 50%; right: -10%;
+      background: radial-gradient(circle, #059669, #0d9488);
+      animation-duration: 30s; animation-delay: -5s;
+    }
+    .aurora-blob:nth-child(3) {
+      width: 400px; height: 400px; bottom: -5%; left: 30%;
+      background: radial-gradient(circle, #4ade80, #22d3ee);
+      animation-duration: 22s; animation-delay: -10s;
+    }
+    .aurora-blob:nth-child(4) {
+      width: 350px; height: 350px; top: 20%; right: 20%;
+      background: radial-gradient(circle, #a78bfa55, #6366f122);
+      animation-duration: 28s; animation-delay: -15s;
+    }
+    @keyframes auroraFloat {
+      0% { transform: translate(0,0) scale(1); }
+      33% { transform: translate(40px,-30px) scale(1.1); }
+      66% { transform: translate(-20px,40px) scale(0.95); }
+      100% { transform: translate(30px,20px) scale(1.05); }
+    }
+
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(74,222,128,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74,222,128,0.02) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black 20%, transparent 70%);
+    }
+
+    canvas#particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+    /* ═══ SCROLLBAR ═══ */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(74,222,128,0.15); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(74,222,128,0.3); }
+
+    /* ═══ RIPPLE ═══ */
+    .ripple { position: relative; overflow: hidden; }
+    .ripple::after {
+      content: ''; position: absolute; border-radius: 50%;
+      background: rgba(74,222,128,0.25);
+      width: 100px; height: 100px;
+      transform: scale(0); opacity: 1; pointer-events: none;
+    }
+    .ripple.animate::after { animation: rippleOut 0.6s ease-out; }
+    @keyframes rippleOut { to { transform: scale(6); opacity: 0; } }
+
+    /* ═══ CONFETTI ═══ */
+    .confetti-container { position: fixed; inset: 0; z-index: 9998; pointer-events: none; }
+    .confetti-piece { position: absolute; width: 10px; height: 10px; top: -10px; opacity: 1; }
+    @keyframes confettiFall {
+      0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg) scale(0.3); opacity: 0; }
+    }
+
+    /* ═══ LAYOUT ═══ */
+    .app-shell { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* ═══ NAVBAR ═══ */
+    .navbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 24px; gap: 14px;
+      background: rgba(3, 10, 6, 0.8);
+      backdrop-filter: blur(30px) saturate(1.8); -webkit-backdrop-filter: blur(30px) saturate(1.8);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+      transition: all 0.3s var(--ease);
+    }
+    .navbar.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.5); border-bottom-color: var(--border-accent); }
+    .nav-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .nav-logo {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: linear-gradient(135deg, #166534 0%, #4ade80 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.15rem;
+      box-shadow: 0 0 20px var(--accent-glow);
+      animation: logoPulse 4s ease-in-out infinite;
+      position: relative;
+    }
+    .nav-logo::after {
+      content: ''; position: absolute; inset: -2px; border-radius: 14px;
+      background: conic-gradient(from 0deg, var(--accent), transparent 30%, transparent 70%, var(--accent));
+      z-index: -1; opacity: 0.25; animation: logoSpin 10s linear infinite;
+    }
+    @keyframes logoPulse {
+      0%,100% { box-shadow: 0 0 20px var(--accent-glow); }
+      50% { box-shadow: 0 0 40px var(--accent-glow), 0 0 60px rgba(74,222,128,0.06); }
+    }
+    @keyframes logoSpin { to { transform: rotate(360deg); } }
+    .nav-brand-text { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.5px; }
+    .nav-brand-text span { color: var(--accent); }
+    .nav-brand-sub { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); font-weight: 600; margin-top: -2px; }
+
+    .nav-links {
+      display: flex; gap: 2px; background: var(--bg-glass); border-radius: var(--radius-sm);
+      padding: 3px; border: 1px solid var(--border);
+    }
+    .nav-links button {
+      background: transparent; border: none; color: var(--text-secondary);
+      padding: 9px 16px; border-radius: 9px; cursor: pointer;
+      font: inherit; font-size: 0.78rem; font-weight: 600;
+      transition: all 0.25s var(--ease); position: relative; white-space: nowrap;
+    }
+    .nav-links button:hover { color: var(--text); background: var(--bg-glass-hover); }
+    .nav-links button.active {
+      color: var(--accent); background: rgba(74,222,128,0.1);
+      box-shadow: 0 2px 12px rgba(74,222,128,0.08);
+    }
+    .nav-links button .badge-dot {
+      position: absolute; top: 5px; right: 5px; width: 6px; height: 6px;
+      border-radius: 50%; background: var(--danger);
+      box-shadow: 0 0 6px rgba(239,68,68,0.5);
+      animation: badgePulse 2s ease-in-out infinite;
+    }
+    @keyframes badgePulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    .nav-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .nav-clock {
+      font-family: var(--mono); font-size: 0.72rem; color: var(--text-muted);
+      padding: 6px 12px; border-radius: 8px; background: var(--bg-glass);
+      border: 1px solid var(--border); white-space: nowrap;
+    }
+    .user-avatar {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent-dim), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 800; color: #fff;
+      border: 2px solid rgba(74,222,128,0.25);
+      cursor: pointer; transition: all 0.3s var(--ease);
+    }
+    .user-avatar:hover { transform: scale(1.1); box-shadow: var(--shadow-glow); }
+    .user-info { display: flex; flex-direction: column; }
+    .user-name { font-size: 0.78rem; font-weight: 700; line-height: 1.2; }
+    .user-role {
+      font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--accent);
+    }
+    .user-role.admin { color: var(--warning); }
+    .btn-logout {
+      background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.12);
+      color: rgba(252,165,165,0.7); padding: 7px 14px; border-radius: 8px;
+      font: inherit; font-size: 0.7rem; font-weight: 600; cursor: pointer;
+      transition: all 0.25s var(--ease);
+    }
+    .btn-logout:hover { background: rgba(239,68,68,0.12); color: #fca5a5; transform: translateY(-1px); }
+
+    /* ═══ PAGE SYSTEM ═══ */
+    .page { display: none; flex: 1; padding: 28px; max-width: 1280px; margin: 0 auto; width: 100%; }
+    .page.active { display: block; }
+    .page.animate-in { animation: pageSlide 0.5s var(--ease-spring) both; }
+    @keyframes pageSlide {
+      from { opacity: 0; transform: translateY(20px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ═══ AUTH SCREENS ═══ */
+    .auth-wrap { display: none; min-height: 100vh; align-items: center; justify-content: center; padding: 24px; }
+    .auth-wrap.active { display: flex; }
+    .auth-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(40px) saturate(1.8); -webkit-backdrop-filter: blur(40px) saturate(1.8);
+      border: 1px solid var(--border);
+      border-radius: 28px; padding: 44px 40px;
+      width: 100%; max-width: 420px;
+      box-shadow: var(--shadow-lg);
+      animation: authCardIn 0.8s var(--ease-spring);
+      position: relative; overflow: hidden;
+    }
+    .auth-card::before {
+      content: ''; position: absolute; top: -1px; left: 15%; right: 15%; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      border-radius: 2px;
+    }
+    .auth-card::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(74,222,128,0.04), transparent 60%);
+      pointer-events: none;
+    }
+    @keyframes authCardIn {
+      from { opacity: 0; transform: translateY(40px) scale(0.95) rotateX(5deg); filter: blur(4px); }
+      to { opacity: 1; transform: translateY(0) scale(1) rotateX(0); filter: blur(0); }
+    }
+    .auth-logo { text-align: center; margin-bottom: 32px; position: relative; z-index: 1; }
+    .auth-logo-icon {
+      width: 76px; height: 76px; border-radius: 22px; margin: 0 auto 16px;
+      background: linear-gradient(135deg, #166534, #4ade80);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      box-shadow: var(--shadow-glow);
+      animation: logoPulse 4s ease-in-out infinite;
+      position: relative;
+    }
+    .auth-logo-icon .leaf-orbit {
+      position: absolute; width: 100%; height: 100%; animation: leafOrbit 6s linear infinite;
+    }
+    .auth-logo-icon .leaf-orbit::before {
+      content: '🍃'; position: absolute; top: -8px; left: 50%; font-size: 0.7rem;
+      transform: translateX(-50%);
+    }
+    @keyframes leafOrbit { to { transform: rotate(360deg); } }
+    .auth-logo h1 { font-size: 1.7rem; font-weight: 900; letter-spacing: -1px; }
+    .auth-logo h1 span { color: var(--accent); }
+    .auth-logo .tagline { color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px; }
+
+    /* ═══ FORM ELEMENTS ═══ */
+    .field { margin-bottom: 18px; position: relative; z-index: 1; }
+    .field label {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.7rem; font-weight: 700; color: var(--text-secondary);
+      margin-bottom: 7px; text-transform: uppercase; letter-spacing: 0.8px;
+    }
+    .field label .label-icon { font-size: 0.8rem; }
+    .input {
+      width: 100%; padding: 13px 16px; border-radius: var(--radius-sm);
+      background: var(--bg-input); border: 1.5px solid var(--border);
+      color: var(--text); font: inherit; font-size: 0.9rem;
+      transition: all 0.3s var(--ease); outline: none;
+    }
+    .input::placeholder { color: var(--text-muted); }
+    .input:focus {
+      border-color: var(--accent);
+      background: rgba(74,222,128,0.03);
+      box-shadow: 0 0 0 4px rgba(74,222,128,0.06), 0 0 20px rgba(74,222,128,0.04);
+    }
+    .input-with-icon { position: relative; }
+    .input-with-icon .input { padding-left: 42px; }
+    .input-with-icon .icon {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      font-size: 0.95rem; opacity: 0.35; pointer-events: none;
+    }
+    select.input { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%234ade80' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+    select.input option { background: #0f2618; color: var(--text); }
+
+    /* ═══ BUTTONS ═══ */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 13px 26px; border: none; border-radius: var(--radius-sm);
+      font: inherit; font-size: 0.88rem; font-weight: 700;
+      cursor: pointer; transition: all 0.3s var(--ease);
+      position: relative; overflow: hidden;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #166534 0%, #22c55e 50%, #4ade80 100%);
+      background-size: 200% 200%; color: #fff;
+      box-shadow: 0 4px 24px rgba(22,101,52,0.35);
+      animation: gradientMove 4s ease infinite;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .btn-primary::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.15) 45%, rgba(255,255,255,0.05) 55%, transparent 60%);
+      transform: translateX(-100%); transition: 0.6s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 36px rgba(22,101,52,0.5); }
+    .btn-primary:hover::before { transform: translateX(100%); }
+    .btn-primary:active { transform: translateY(0) scale(0.98); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+    .btn-primary.full { width: 100%; }
+
+    .btn-outline {
+      background: var(--bg-glass); border: 1.5px solid var(--border);
+      color: var(--text); padding: 11px 20px; border-radius: var(--radius-sm);
+    }
+    .btn-outline:hover { background: var(--bg-glass-hover); border-color: var(--accent); color: var(--accent); }
+    .btn-ghost { background: none; border: none; color: var(--accent); padding: 8px 12px; font-weight: 600; cursor: pointer; }
+    .btn-ghost:hover { opacity: 0.7; }
+    .btn-danger-outline {
+      background: rgba(239,68,68,0.06); border: 1.5px solid rgba(239,68,68,0.18);
+      color: #fca5a5; padding: 11px 20px; border-radius: var(--radius-sm);
+    }
+    .btn-danger-outline:hover { background: rgba(239,68,68,0.12); }
+    .btn-icon {
+      width: 38px; height: 38px; padding: 0; border-radius: 10px;
+      background: var(--bg-glass); border: 1px solid var(--border);
+      color: var(--text-secondary); display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; cursor: pointer; transition: all 0.25s var(--ease);
+    }
+    .btn-icon:hover { background: var(--bg-glass-hover); color: var(--accent); }
+
+    .auth-switch { text-align: center; margin-top: 24px; color: var(--text-secondary); font-size: 0.85rem; position: relative; z-index: 1; }
+    .auth-switch a { color: var(--accent); cursor: pointer; text-decoration: none; font-weight: 700; transition: 0.2s; }
+    .auth-switch a:hover { text-decoration: underline; filter: brightness(1.2); }
+
+    /* ═══ HOME ═══ */
+    .home-hero {
+      margin-bottom: 32px; padding: 32px;
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      position: relative; overflow: hidden;
+    }
+    .home-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(22,101,52,0.25), transparent 50%, rgba(52,211,153,0.05));
+      pointer-events: none;
+    }
+    .home-hero::after {
+      content: ''; position: absolute; top: -50%; right: -20%; width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(74,222,128,0.06), transparent 60%);
+      pointer-events: none; animation: heroGlow 8s ease-in-out infinite alternate;
+    }
+    @keyframes heroGlow {
+      0% { opacity: 0.5; transform: translate(0,0); }
+      100% { opacity: 1; transform: translate(-30px,30px); }
+    }
+    .home-hero-content { position: relative; z-index: 1; }
+    .greeting { font-size: 1.85rem; font-weight: 900; letter-spacing: -1px; line-height: 1.2; }
+    .greeting .typed-cursor { display: inline-block; width: 3px; height: 1.7rem; background: var(--accent); margin-left: 4px; animation: blink 1s step-end infinite; vertical-align: text-bottom; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .hero-subtitle { color: var(--text-secondary); margin-top: 6px; font-size: 0.9rem; }
+    .hero-stats { display: flex; gap: 16px; margin-top: 20px; flex-wrap: wrap; }
+    .hero-stat {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      transition: all 0.3s var(--ease); cursor: default;
+    }
+    .hero-stat:hover { background: rgba(255,255,255,0.06); transform: translateY(-2px); border-color: var(--border-accent); }
+    .hero-stat .h-icon { font-size: 1.3rem; }
+    .hero-stat .h-val { font-size: 1.3rem; font-weight: 900; font-family: var(--mono); color: var(--accent); }
+    .hero-stat .h-lbl { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* ═══ QUICK ACTIONS GRID ═══ */
+    .home-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+
+    /* ═══ 3D ACTION CARDS ═══ */
+    .a-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px;
+      cursor: pointer; transition: all 0.4s var(--ease);
+      position: relative; overflow: hidden;
+      opacity: 0; transform: translateY(20px);
+      animation: staggerIn 0.5s var(--ease-spring) forwards;
+      transform-style: preserve-3d; perspective: 600px;
+    }
+    .a-card:nth-child(1) { animation-delay: 0.05s; }
+    .a-card:nth-child(2) { animation-delay: 0.1s; }
+    .a-card:nth-child(3) { animation-delay: 0.15s; }
+    .a-card:nth-child(4) { animation-delay: 0.2s; }
+    .a-card:nth-child(5) { animation-delay: 0.25s; }
+    @keyframes staggerIn { to { opacity: 1; transform: translateY(0); } }
+
+    .a-card::before {
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      transition: left 0.5s var(--ease);
+    }
+    .a-card::after {
+      content: ''; position: absolute; bottom: -40px; right: -40px; width: 140px; height: 140px;
+      background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+      opacity: 0; transition: opacity 0.4s; pointer-events: none;
+    }
+    .a-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      border-color: var(--border-accent);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 30px rgba(74,222,128,0.04);
+    }
+    .a-card:hover::before { left: 100%; }
+    .a-card:hover::after { opacity: 1; }
+    .a-card.primary {
+      background: linear-gradient(135deg, rgba(22,101,52,0.6), rgba(34,197,94,0.3));
+      border-color: rgba(74,222,128,0.12);
+    }
+    .a-card.primary:hover { box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(74,222,128,0.08); }
+    .a-card.admin-card { border-color: rgba(245,158,11,0.12); }
+    .a-card .card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .a-card .c-icon {
+      width: 46px; height: 46px; border-radius: 13px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; background: var(--bg-glass); border: 1px solid var(--border);
+      transition: all 0.35s var(--ease);
+    }
+    .a-card:hover .c-icon { transform: scale(1.15) rotate(-8deg); box-shadow: 0 0 20px rgba(74,222,128,0.1); }
+    .a-card.primary .c-icon { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15); }
+    .a-card .c-arrow { font-size: 1.1rem; color: var(--text-muted); transition: all 0.3s var(--ease); }
+    .a-card:hover .c-arrow { color: var(--accent); transform: translateX(4px); }
+    .a-card h3 { font-size: 1rem; font-weight: 800; margin-bottom: 4px; }
+    .a-card p { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ═══ ACTIVITY FEED ═══ */
+    .activity-section { margin-top: 28px; }
+    .activity-section h3 {
+      font-size: 1rem; font-weight: 800; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .activity-feed { display: flex; flex-direction: column; gap: 8px; }
+    .activity-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px; border-radius: var(--radius-md);
+      background: var(--bg-glass); border: 1px solid var(--border);
+      transition: all 0.3s var(--ease);
+      opacity: 0; animation: staggerIn 0.4s var(--ease-spring) forwards;
+    }
+    .activity-item:nth-child(1) { animation-delay: 0.05s; }
+    .activity-item:nth-child(2) { animation-delay: 0.1s; }
+    .activity-item:nth-child(3) { animation-delay: 0.15s; }
+    .activity-item:nth-child(4) { animation-delay: 0.2s; }
+    .activity-item:nth-child(5) { animation-delay: 0.25s; }
+    .activity-item:hover { background: var(--bg-glass-hover); transform: translateX(4px); }
+    .activity-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .activity-icon.scan { background: rgba(74,222,128,0.1); }
+    .activity-icon.drive { background: rgba(96,165,250,0.1); }
+    .activity-icon.cert { background: rgba(251,191,36,0.1); }
+    .activity-content { flex: 1; }
+    .activity-content .act-text { font-size: 0.82rem; font-weight: 600; }
+    .activity-content .act-time { font-size: 0.68rem; color: var(--text-muted); }
+
+    /* ═══ SECTION HEADER ═══ */
+    .sec-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+    .sec-title {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 1.4rem; font-weight: 900; letter-spacing: -0.5px;
+    }
+    .sec-title .s-icon {
+      width: 42px; height: 42px; border-radius: 13px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; background: var(--bg-glass); border: 1px solid var(--border);
+    }
+
+    /* ═══ SKELETON LOADER ═══ */
+    .skeleton { background: linear-gradient(90deg, var(--bg-glass) 25%, rgba(255,255,255,0.06) 50%, var(--bg-glass) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: var(--radius-sm); }
+    @keyframes shimmer { to { background-position: -200% 0; } }
+    .skeleton-card { height: 120px; border-radius: var(--radius); margin-bottom: 14px; }
+    .skeleton-bar { height: 18px; margin-bottom: 10px; }
+    .skeleton-bar.w60 { width: 60%; }
+    .skeleton-bar.w40 { width: 40%; }
+
+    /* ═══ STATS DASHBOARD ═══ */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin-bottom: 28px; }
+    .stat-tile {
+      background: var(--bg-card); backdrop-filter: blur(16px);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 22px; text-align: center;
+      transition: all 0.35s var(--ease);
+      opacity: 0; animation: staggerIn 0.5s var(--ease-spring) forwards;
+      position: relative; overflow: hidden;
+    }
+    .stat-tile::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .stat-tile:nth-child(1) { animation-delay: 0.1s; }
+    .stat-tile:nth-child(2) { animation-delay: 0.2s; }
+    .stat-tile:nth-child(3) { animation-delay: 0.3s; }
+    .stat-tile:hover { transform: translateY(-4px); border-color: var(--border-accent); }
+    .stat-tile:hover::after { opacity: 1; }
+    .stat-tile .stat-num {
+      font-size: 2.6rem; font-weight: 900; letter-spacing: -2px;
+      font-family: var(--mono);
+      background: linear-gradient(135deg, #4ade80, #22c55e, #16a34a);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-tile .stat-lbl {
+      font-size: 0.68rem; color: var(--text-muted); margin-top: 4px;
+      text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
+    }
+
+    /* ═══ CHART SECTION ═══ */
+    .chart-section { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+    @media (max-width: 768px) { .chart-section { grid-template-columns: 1fr; } }
+    .chart-box {
+      background: var(--bg-card); backdrop-filter: blur(16px);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 24px;
+    }
+    .chart-box h3 { font-size: 0.95rem; font-weight: 800; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .donut-wrap { display: flex; align-items: center; justify-content: center; position: relative; }
+    .donut-center { position: absolute; text-align: center; }
+    .donut-center .dc-num { font-size: 1.5rem; font-weight: 900; font-family: var(--mono); color: var(--accent); }
+    .donut-center .dc-lbl { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; }
+
+    /* ═══ BAR CHART ═══ */
+    .bar-list { display: flex; flex-direction: column; gap: 12px; }
+    .bar-item { display: flex; align-items: center; gap: 12px; }
+    .bar-label { width: 80px; font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bar-track { flex: 1; height: 24px; background: var(--bg-glass); border-radius: 12px; overflow: hidden; position: relative; }
+    .bar-fill {
+      height: 100%; border-radius: 12px;
+      background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+      transition: width 1s var(--ease-spring);
+      display: flex; align-items: center; justify-content: flex-end; padding-right: 8px;
+      font-size: 0.65rem; font-weight: 800; color: #fff; font-family: var(--mono);
+      min-width: 32px; position: relative;
+    }
+    .bar-fill::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent 60%, rgba(255,255,255,0.1));
+      border-radius: 12px;
+    }
+    .bar-fill.animated { animation: barGrow 1s var(--ease-spring); }
+    @keyframes barGrow { from { width: 0 !important; } }
+
+    /* ═══ DRIVES ═══ */
+    .drive-tile {
+      background: var(--bg-card); backdrop-filter: blur(16px);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 22px; margin-bottom: 12px;
+      transition: all 0.35s var(--ease);
+      position: relative; overflow: hidden;
+      opacity: 0; animation: staggerIn 0.5s var(--ease-spring) forwards;
+    }
+    .drive-tile:nth-child(odd) { animation-delay: 0.05s; }
+    .drive-tile:nth-child(even) { animation-delay: 0.1s; }
+    .drive-tile::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: linear-gradient(180deg, var(--accent), var(--accent2));
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .drive-tile:hover { transform: translateX(6px); border-color: var(--border-accent); }
+    .drive-tile:hover::before { opacity: 1; }
+    .drive-tile .drive-top { display: flex; align-items: flex-start; justify-content: space-between; }
+    .drive-tile h3 { font-size: 1rem; font-weight: 800; }
+    .drive-date-badge {
+      padding: 4px 12px; border-radius: 20px; font-size: 0.68rem; font-weight: 700;
+      background: rgba(74,222,128,0.08); color: var(--accent); border: 1px solid rgba(74,222,128,0.12);
+      white-space: nowrap;
+    }
+    .drive-tile .drive-loc { color: var(--text-secondary); font-size: 0.78rem; margin-top: 4px; }
+    .drive-tile .species-section { margin-top: 12px; }
+    .drive-tile .species-section .sl { font-size: 0.64rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; font-weight: 700; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 5px; }
+    .s-tag {
+      padding: 4px 12px; border-radius: 20px; font-size: 0.68rem; font-weight: 700;
+      background: rgba(74,222,128,0.06); color: var(--accent);
+      border: 1px solid rgba(74,222,128,0.1);
+      transition: all 0.2s;
+    }
+    .s-tag:hover { background: rgba(74,222,128,0.12); transform: scale(1.05); }
+
+    /* ═══ CERTIFICATE ═══ */
+    .cert-wrap {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 50vh; text-align: center;
+    }
+    .cert-trophy {
+      font-size: 4.5rem; margin-bottom: 8px;
+      animation: trophySpin 4s ease-in-out infinite;
+      filter: drop-shadow(0 0 20px rgba(251,191,36,0.25));
+    }
+    @keyframes trophySpin {
+      0%,100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-8px) rotate(-3deg); }
+      75% { transform: translateY(-8px) rotate(3deg); }
+    }
+    .cert-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 18px; border-radius: 20px; margin-bottom: 18px;
+      background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.15);
+      color: var(--gold); font-size: 0.75rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .cert-wrap h2 { font-size: 1.6rem; font-weight: 900; margin-bottom: 10px; letter-spacing: -0.5px; }
+    .cert-wrap .cert-desc { color: var(--text-secondary); max-width: 400px; margin-bottom: 32px; line-height: 1.8; font-size: 0.88rem; }
+
+    /* ═══ SCAN — DUAL MODE ═══ */
+    .scan-wrapper { max-width: 560px; margin: 0 auto; }
+    .scan-mode-tabs {
+      display: flex; gap: 3px; margin-bottom: 22px;
+      background: var(--bg-glass); border-radius: var(--radius-sm); padding: 3px;
+      border: 1px solid var(--border);
+    }
+    .scan-mode-tabs button {
+      flex: 1; padding: 12px 16px; border: none; background: transparent;
+      color: var(--text-secondary); font: inherit; font-size: 0.82rem; font-weight: 700;
+      border-radius: 9px; cursor: pointer; transition: all 0.25s var(--ease);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .scan-mode-tabs button.active {
+      background: rgba(74,222,128,0.1); color: var(--accent);
+      box-shadow: 0 2px 12px rgba(74,222,128,0.08);
+    }
+    .scan-mode-tabs button:hover:not(.active) { color: var(--text); background: var(--bg-glass-hover); }
+
+    .drop-zone {
+      border: 2px dashed rgba(74,222,128,0.15); border-radius: var(--radius);
+      padding: 50px 20px; text-align: center; cursor: pointer;
+      transition: all 0.35s var(--ease);
+      background: var(--bg-glass); position: relative; overflow: hidden;
+    }
+    .drop-zone::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(74,222,128,0.04), transparent 70%);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .drop-zone:hover, .drop-zone.dragover { border-color: var(--accent); background: rgba(74,222,128,0.03); }
+    .drop-zone:hover::before, .drop-zone.dragover::before { opacity: 1; }
+    .drop-zone .dz-icon { font-size: 3rem; margin-bottom: 14px; animation: floatUpDown 3s ease-in-out infinite; }
+    @keyframes floatUpDown { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    .drop-zone h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
+    .drop-zone p { color: var(--text-muted); font-size: 0.78rem; }
+    .drop-zone input { display: none; }
+
+    /* ═══ LIVE CAMERA ═══ */
+    .camera-container {
+      position: relative; border-radius: var(--radius); overflow: hidden;
+      background: #000; border: 1px solid var(--border);
+      aspect-ratio: 4/3;
+    }
+    .camera-container video {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .camera-container canvas { display: none; }
+    .viewfinder-overlay {
+      position: absolute; inset: 0; pointer-events: none;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .viewfinder-box {
+      width: 65%; height: 60%; border: 2px solid rgba(74,222,128,0.4);
+      border-radius: var(--radius-md); position: relative;
+      box-shadow: 0 0 0 9999px rgba(0,0,0,0.35);
+    }
+    .viewfinder-box::before, .viewfinder-box::after {
+      content: ''; position: absolute; width: 24px; height: 24px;
+      border-color: var(--accent); border-style: solid;
+    }
+    .viewfinder-box::before { top: -2px; left: -2px; border-width: 3px 0 0 3px; border-radius: 6px 0 0 0; }
+    .viewfinder-box::after { top: -2px; right: -2px; border-width: 3px 3px 0 0; border-radius: 0 6px 0 0; }
+    .vf-corner-bl, .vf-corner-br {
+      position: absolute; width: 24px; height: 24px;
+      border-color: var(--accent); border-style: solid;
+    }
+    .vf-corner-bl { bottom: -2px; left: -2px; border-width: 0 0 3px 3px; border-radius: 0 0 0 6px; }
+    .vf-corner-br { bottom: -2px; right: -2px; border-width: 0 3px 3px 0; border-radius: 0 0 6px 0; }
+    .scan-line {
+      position: absolute; left: 5%; right: 5%; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      animation: scanLineMove 2.5s ease-in-out infinite;
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+    @keyframes scanLineMove {
+      0% { top: 10%; } 50% { top: 85%; } 100% { top: 10%; }
+    }
+    .camera-controls {
+      display: flex; justify-content: center; gap: 14px; margin-top: 16px;
+    }
+    .cam-btn {
+      padding: 12px 28px; border: none; border-radius: var(--radius-sm);
+      font: inherit; font-weight: 700; font-size: 0.85rem; cursor: pointer;
+      transition: all 0.3s var(--ease); display: flex; align-items: center; gap: 8px;
+    }
+    .cam-btn-capture {
+      background: linear-gradient(135deg, #166534, #22c55e); color: #fff;
+      box-shadow: 0 4px 20px rgba(22,101,52,0.3);
+    }
+    .cam-btn-capture:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(22,101,52,0.4); }
+    .cam-btn-switch {
+      background: var(--bg-glass); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .cam-btn-switch:hover { background: var(--bg-glass-hover); color: var(--accent); }
+    .camera-status {
+      text-align: center; margin-top: 12px; font-size: 0.75rem; color: var(--text-muted);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .pulse-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #ef4444;
+      animation: pulseDot 1.5s ease-in-out infinite;
+      box-shadow: 0 0 6px rgba(239,68,68,0.5);
+    }
+    @keyframes pulseDot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .scan-progress { text-align: center; padding: 36px 0; }
+    .scan-progress .tree-grow {
+      font-size: 3.5rem; margin-bottom: 14px;
+      animation: treeGrow 2s ease-in-out infinite;
+    }
+    @keyframes treeGrow {
+      0% { transform: scale(0.9); filter: brightness(0.8); }
+      50% { transform: scale(1.1); filter: brightness(1.2); }
+      100% { transform: scale(0.9); filter: brightness(0.8); }
+    }
+    .progress-bar-wrap {
+      width: 80%; max-width: 280px; margin: 0 auto;
+      height: 5px; background: var(--bg-glass); border-radius: 3px; overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%; border-radius: 3px;
+      background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+      animation: progressIndeterminate 1.5s ease-in-out infinite;
+    }
+    @keyframes progressIndeterminate {
+      0% { width: 0; margin-left: 0; }
+      50% { width: 60%; margin-left: 20%; }
+      100% { width: 0; margin-left: 100%; }
+    }
+
+    .preview-image {
+      width: 100%; max-height: 260px; object-fit: cover; border-radius: var(--radius);
+      margin-bottom: 18px; border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .ai-box {
+      padding: 16px 20px; border-radius: var(--radius-md); margin-bottom: 20px;
+      border: 1px solid; display: flex; align-items: flex-start; gap: 12px;
+    }
+    .ai-box .ai-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .ai-box.ok { background: rgba(74,222,128,0.05); border-color: rgba(74,222,128,0.12); }
+    .ai-box.warn { background: rgba(245,158,11,0.05); border-color: rgba(245,158,11,0.12); }
+    .ai-box h4 { font-size: 0.9rem; font-weight: 800; margin-bottom: 3px; }
+    .ai-box p { font-size: 0.78rem; color: var(--text-secondary); }
+
+    /* ═══ TREE LOG HISTORY ═══ */
+    .history-section { margin-top: 28px; }
+    .history-section h3 {
+      font-size: 1rem; font-weight: 800; margin-bottom: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .history-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px; border-radius: var(--radius-md);
+      background: var(--bg-glass); border: 1px solid var(--border);
+      margin-bottom: 8px; transition: all 0.3s var(--ease);
+    }
+    .history-item:hover { background: var(--bg-glass-hover); transform: translateX(4px); }
+    .history-thumb {
+      width: 46px; height: 46px; border-radius: 10px;
+      background: rgba(74,222,128,0.08); display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0; overflow: hidden;
+    }
+    .history-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .history-info { flex: 1; }
+    .history-info .hi-species { font-size: 0.82rem; font-weight: 700; }
+    .history-info .hi-meta { font-size: 0.68rem; color: var(--text-muted); display: flex; gap: 12px; }
+    .history-count {
+      font-family: var(--mono); font-weight: 800; color: var(--accent); font-size: 0.88rem;
+      padding: 4px 12px; border-radius: 8px; background: rgba(74,222,128,0.08);
+    }
+
+    /* ═══ ADMIN ═══ */
+    .admin-tabs {
+      display: flex; gap: 3px; margin-bottom: 24px;
+      background: var(--bg-glass); border-radius: var(--radius-sm); padding: 3px;
+      border: 1px solid var(--border);
+    }
+    .admin-tabs button {
+      flex: 1; padding: 11px 14px; border: none; background: transparent;
+      color: var(--text-secondary); font: inherit; font-size: 0.8rem; font-weight: 700;
+      border-radius: 9px; cursor: pointer; transition: all 0.25s var(--ease);
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+    }
+    .admin-tabs button .tab-count {
+      padding: 2px 7px; border-radius: 10px; font-size: 0.62rem;
+      background: var(--bg-glass); font-family: var(--mono);
+    }
+    .admin-tabs button.active {
+      background: linear-gradient(135deg, rgba(22,101,52,0.4), rgba(34,197,94,0.12));
+      color: var(--accent); box-shadow: 0 2px 14px rgba(0,0,0,0.15);
+    }
+    .admin-tabs button.active .tab-count { background: rgba(74,222,128,0.12); color: var(--accent); }
+    .admin-tabs button:hover:not(.active) { color: var(--text); }
+    .a-tab { display: none; animation: pageSlide 0.4s var(--ease); }
+    .a-tab.active { display: block; }
+
+    .inline-form { display: flex; gap: 10px; margin-bottom: 22px; align-items: flex-end; }
+    .inline-form .field { flex: 1; margin-bottom: 0; }
+    .add-btn {
+      padding: 13px 26px; border: none; border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #166534, #22c55e);
+      color: #fff; font: inherit; font-weight: 800; cursor: pointer;
+      transition: all 0.3s var(--ease); white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(22,101,52,0.25);
+    }
+    .add-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(22,101,52,0.35); }
+
+    .data-row {
+      display: flex; justify-content: space-between; align-items: center;
+      background: var(--bg-glass); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 14px 18px;
+      margin-bottom: 7px; transition: all 0.25s var(--ease);
+    }
+    .data-row:hover { background: var(--bg-glass-hover); transform: translateX(4px); }
+    .data-row .dr-name { font-weight: 600; font-size: 0.9rem; }
+    .data-row .dr-val { font-weight: 800; color: var(--accent); font-family: var(--mono); font-size: 0.85rem; }
+
+    .chip-grid { display: flex; flex-wrap: wrap; gap: 7px; margin: 10px 0 18px; }
+    .chip {
+      padding: 7px 16px; border-radius: 20px; font-size: 0.78rem; font-weight: 600;
+      background: var(--bg-glass); border: 1.5px solid var(--border);
+      color: var(--text-secondary); cursor: pointer; transition: all 0.25s var(--ease);
+      user-select: none;
+    }
+    .chip:hover { border-color: rgba(74,222,128,0.25); }
+    .chip.on { background: rgba(74,222,128,0.1); border-color: var(--accent); color: var(--accent); box-shadow: 0 0 12px rgba(74,222,128,0.06); }
+
+    .flag-card {
+      background: var(--bg-card); border: 1px solid rgba(245,158,11,0.12);
+      border-radius: var(--radius); padding: 20px; margin-bottom: 12px;
+      transition: all 0.3s var(--ease);
+    }
+    .flag-card:hover { border-color: rgba(245,158,11,0.25); }
+    .flag-card .fc-user { font-weight: 800; margin-bottom: 2px; }
+    .flag-card .fc-guess { color: #fca5a5; font-size: 0.78rem; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    .flag-card .fc-label { font-size: 0.64rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; margin-bottom: 8px; }
+    .resolve-row { display: flex; flex-wrap: wrap; gap: 7px; }
+    .r-chip {
+      padding: 6px 14px; border-radius: 16px; font-size: 0.75rem; font-weight: 700;
+      background: rgba(74,222,128,0.06); color: var(--accent);
+      border: 1px solid rgba(74,222,128,0.12);
+      cursor: pointer; transition: all 0.25s var(--ease);
+    }
+    .r-chip:hover { background: rgba(74,222,128,0.15); transform: scale(1.08); box-shadow: 0 2px 12px rgba(74,222,128,0.08); }
+
+    /* ═══ LEADERBOARD ═══ */
+    .leaderboard-card {
+      background: var(--bg-card); backdrop-filter: blur(16px);
+      border: 1px solid var(--border); border-radius: var(--radius); padding: 22px;
+    }
+    .leaderboard-card h3 { font-size: 1rem; font-weight: 800; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .leaderboard-list { display: flex; flex-direction: column; gap: 8px; }
+    .leader-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg-glass); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 11px 16px;
+      transition: all 0.25s var(--ease);
+    }
+    .leader-row:hover { background: var(--bg-glass-hover); transform: translateX(4px); }
+    .leader-left { display: flex; align-items: center; gap: 10px; }
+    .leader-rank {
+      width: 24px; height: 24px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 800; font-family: var(--mono);
+      background: rgba(255,255,255,0.05); color: var(--text-secondary);
+    }
+    .leader-rank.rank-1 { background: var(--gold); color: #000; box-shadow: 0 0 10px rgba(251,191,36,0.25); }
+    .leader-rank.rank-2 { background: var(--silver); color: #000; }
+    .leader-rank.rank-3 { background: var(--bronze); color: #000; }
+    .leader-name { font-size: 0.82rem; font-weight: 600; }
+    .leader-val { font-size: 0.82rem; font-weight: 800; color: var(--accent); font-family: var(--mono); }
+
+    .chart-dot-group { cursor: pointer; }
+    .chart-dot-group circle { transition: r 0.2s var(--ease); }
+    .chart-dot-group:hover circle:first-child { r: 6px; }
+    .hover-trigger { pointer-events: all; }
+
+    /* ═══ TOAST ═══ */
+    .toast-wrap { position: fixed; top: 70px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+    .toast {
+      padding: 12px 20px 12px 16px;
+      border-radius: var(--radius-md);
+      backdrop-filter: blur(24px);
+      border: 1px solid; min-width: 260px;
+      display: flex; align-items: center; gap: 10px;
+      animation: toastSlide 0.45s var(--ease-spring);
+      box-shadow: var(--shadow); position: relative; overflow: hidden;
+    }
+    .toast::after {
+      content: ''; position: absolute; bottom: 0; left: 0; height: 3px;
+      background: rgba(255,255,255,0.2);
+      animation: toastTimer 3.5s linear forwards;
+    }
+    @keyframes toastTimer { from { width: 100%; } to { width: 0; } }
+    .toast .t-icon { font-size: 1.1rem; flex-shrink: 0; }
+    .toast .t-msg { font-size: 0.82rem; font-weight: 600; }
+    .toast.success { background: rgba(22,101,52,0.9); border-color: rgba(74,222,128,0.2); }
+    .toast.error { background: rgba(127,29,29,0.9); border-color: rgba(239,68,68,0.2); }
+    .toast.info { background: rgba(30,58,138,0.9); border-color: rgba(96,165,250,0.2); }
+    @keyframes toastSlide {
+      from { opacity: 0; transform: translateX(60px) scale(0.9); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+
+    /* ═══ EMPTY STATE ═══ */
+    .empty { text-align: center; padding: 50px 24px; color: var(--text-muted); }
+    .empty .e-icon { font-size: 2.8rem; margin-bottom: 12px; opacity: 0.4; animation: floatUpDown 3s ease-in-out infinite; }
+    .empty p { font-size: 0.9rem; }
+
+    /* ═══ SPINNER ═══ */
+    .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 36px auto; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ═══ MODAL ═══ */
+    .modal-bg {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+      align-items: center; justify-content: center; padding: 24px;
+    }
+    .modal-bg.open { display: flex; }
+    .modal-box {
+      background: rgba(10,28,18,0.97); backdrop-filter: blur(30px);
+      border: 1px solid var(--border); border-radius: 22px;
+      padding: 28px; width: 100%; max-width: 420px; max-height: 70vh;
+      overflow-y: auto; animation: authCardIn 0.45s var(--ease-spring);
+    }
+    .modal-box h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+    .modal-row {
+      padding: 12px 16px; border-radius: var(--radius-xs);
+      cursor: pointer; transition: all 0.2s var(--ease);
+      border-bottom: 1px solid var(--border); font-weight: 500;
+    }
+    .modal-row:hover { background: var(--bg-glass-hover); color: var(--accent); padding-left: 22px; }
+
+    /* ═══ FOOTER ═══ */
+    .app-footer {
+      padding: 18px 28px; text-align: center;
+      border-top: 1px solid var(--border);
+      font-size: 0.7rem; color: var(--text-muted);
+      background: rgba(3,10,6,0.5);
+    }
+    .app-footer a { color: var(--accent); text-decoration: none; }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 900px) {
+      .navbar { flex-wrap: wrap; padding: 10px 14px; }
+      .nav-links { order: 3; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .nav-links::-webkit-scrollbar { display: none; }
+      .page { padding: 18px 14px; }
+      .chart-section { grid-template-columns: 1fr; }
+      .hero-stats { flex-wrap: wrap; }
+      .nav-clock { display: none; }
+    }
+    @media (max-width: 600px) {
+      .home-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .inline-form { flex-direction: column; }
+      .auth-card { padding: 28px 20px; border-radius: 22px; }
+      .greeting { font-size: 1.4rem; }
+      .nav-right .user-info { display: none; }
+      .camera-container { aspect-ratio: 3/4; }
+    }
+  </style>
+</head>
+<body>
+  <div class="aurora">
+    <div class="aurora-blob"></div>
+    <div class="aurora-blob"></div>
+    <div class="aurora-blob"></div>
+    <div class="aurora-blob"></div>
+  </div>
+  <div class="bg-grid"></div>
+  <canvas id="particles"></canvas>
+
+  <div class="toast-wrap" id="toasts"></div>
+  <div class="confetti-container" id="confetti"></div>
+
+  <!-- ═══ LOGIN ═══ -->
+  <div class="auth-wrap active" id="loginView">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="auth-logo-icon">🌳<div class="leaf-orbit"></div></div>
+        <h1>Vriksha <span>Netra</span></h1>
+        <p class="tagline">AI-Powered Tree Tracker • Akshar Bharati NGO</p>
+      </div>
+      <form onsubmit="doLogin(event)">
+        <div class="field">
+          <label><span class="label-icon">📧</span> Email</label>
+          <div class="input-with-icon"><span class="icon">📧</span><input class="input" type="email" id="l_email" placeholder="you@example.com" required autocomplete="email" /></div>
+        </div>
+        <div class="field">
+          <label><span class="label-icon">🔒</span> Password</label>
+          <div class="input-with-icon"><span class="icon">🔒</span><input class="input" type="password" id="l_pass" placeholder="••••••••" required autocomplete="current-password" /></div>
+        </div>
+        <button class="btn btn-primary full" type="submit" id="l_btn">Sign In →</button>
+      </form>
+      <div class="auth-switch">New volunteer? <a onclick="showAuth('register')">Create account</a></div>
+    </div>
+  </div>
+
+  <!-- ═══ REGISTER ═══ -->
+  <div class="auth-wrap" id="registerView">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="auth-logo-icon">🌱<div class="leaf-orbit"></div></div>
+        <h1>Join <span>Vriksha Netra</span></h1>
+        <p class="tagline">Become part of the green revolution</p>
+      </div>
+      <form onsubmit="doRegister(event)">
+        <div class="field">
+          <label><span class="label-icon">👤</span> Full Name</label>
+          <div class="input-with-icon"><span class="icon">👤</span><input class="input" type="text" id="r_name" placeholder="Your name" required /></div>
+        </div>
+        <div class="field">
+          <label><span class="label-icon">📧</span> Email</label>
+          <div class="input-with-icon"><span class="icon">📧</span><input class="input" type="email" id="r_email" placeholder="you@example.com" required /></div>
+        </div>
+        <div class="field">
+          <label><span class="label-icon">🔒</span> Password</label>
+          <div class="input-with-icon"><span class="icon">🔒</span><input class="input" type="password" id="r_pass" placeholder="Min 6 characters" required minlength="6" /></div>
+        </div>
+        <button class="btn btn-primary full" type="submit" id="r_btn">Create Account →</button>
+      </form>
+      <div class="auth-switch">Already registered? <a onclick="showAuth('login')">Sign in</a></div>
+    </div>
+  </div>
+
+  <!-- ═══ APP SHELL ═══ -->
+  <div class="app-shell" id="appShell" style="display:none;">
+    <nav class="navbar" id="navbar">
+      <div class="nav-brand">
+        <div class="nav-logo">🌳</div>
+        <div>
+          <div class="nav-brand-text">Vriksha<span>Netra</span></div>
+          <div class="nav-brand-sub">AI Tree Tracker</div>
+        </div>
+      </div>
+      <div class="nav-links" id="navLinks">
+        <button class="active" data-page="home">🏠 Home</button>
+        <button data-page="scan">📷 Scan</button>
+        <button data-page="history">📋 History</button>
+        <button data-page="drives">📅 Drives</button>
+        <button data-page="dashboard">📊 Stats</button>
+        <button data-page="certificate">🏆 Certificate</button>
+        <button data-page="admin" id="adminNav" style="display:none;">⚙️ Admin</button>
+      </div>
+      <div class="nav-right">
+        <div class="nav-clock" id="navClock">--:--</div>
+        <div class="user-avatar" id="userAvatar"></div>
+        <div class="user-info">
+          <div class="user-name" id="navName"></div>
+          <div class="user-role" id="navRole"></div>
+        </div>
+        <button class="btn-logout" onclick="doLogout()">⏻ Logout</button>
+      </div>
+    </nav>
+
+    <!-- HOME -->
+    <div class="page active" id="pg_home">
+      <div class="home-hero">
+        <div class="home-hero-content">
+          <div class="greeting" id="greetingText"></div>
+          <p class="hero-subtitle" id="heroSubtitle"></p>
+          <div class="hero-stats" id="heroStats">
+            <div class="hero-stat"><span class="h-icon">🌳</span><div><div class="h-val" id="heroTrees">-</div><div class="h-lbl">Trees</div></div></div>
+            <div class="hero-stat"><span class="h-icon">🧬</span><div><div class="h-val" id="heroSpecies">-</div><div class="h-lbl">Species</div></div></div>
+            <div class="hero-stat"><span class="h-icon">📅</span><div><div class="h-val" id="heroDrives">-</div><div class="h-lbl">Drives</div></div></div>
+            <div class="hero-stat"><span class="h-icon">🔥</span><div><div class="h-val" id="heroStreak">-</div><div class="h-lbl">Streak</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="home-grid" id="homeCards"></div>
+      <div class="activity-section" id="activitySection"></div>
+    </div>
+
+    <!-- SCAN (Dual Mode: Upload + Live Camera) -->
+    <div class="page" id="pg_scan">
+      <div class="sec-header"><h2 class="sec-title"><span class="s-icon">📷</span> Scan a Tree</h2></div>
+      <div class="scan-wrapper">
+        <div class="scan-mode-tabs" id="scanModeTabs">
+          <button class="active" data-mode="upload" onclick="setScanMode('upload')">📁 Upload Photo</button>
+          <button data-mode="live" onclick="setScanMode('live')">📹 Live Camera</button>
+        </div>
+        <div id="scanStep_upload">
+          <div class="drop-zone" id="dropZone">
+            <div class="dz-icon">📸</div>
+            <h3>Drop your tree photo here</h3>
+            <p>or click to browse — JPG, PNG up to 10MB</p>
+            <input type="file" id="fileInput" accept="image/*" capture="environment" />
+          </div>
+        </div>
+        <div id="scanStep_live" style="display:none;">
+          <div class="camera-container" id="cameraContainer">
+            <video id="cameraVideo" autoplay playsinline muted></video>
+            <canvas id="cameraCanvas"></canvas>
+            <div class="viewfinder-overlay">
+              <div class="viewfinder-box">
+                <div class="vf-corner-bl"></div>
+                <div class="vf-corner-br"></div>
+                <div class="scan-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="camera-controls">
+            <button class="cam-btn cam-btn-capture" id="captureBtn" onclick="capturePhoto()">📸 Capture</button>
+            <button class="cam-btn cam-btn-switch" onclick="switchCamera()">🔄 Flip</button>
+            <button class="cam-btn cam-btn-switch" onclick="stopCamera(); setScanMode('upload')">✕ Close</button>
+          </div>
+          <div class="camera-status">
+            <div class="pulse-dot"></div>
+            <span>Camera active — Point at a tree and capture</span>
+          </div>
+        </div>
+        <div id="scanStep_id" style="display:none;">
+          <div class="scan-progress">
+            <div class="tree-grow">🌱</div>
+            <p style="color:var(--text-secondary); margin-bottom:14px; font-weight:600;">Identifying species with AI...</p>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill"></div></div>
+          </div>
+        </div>
+        <div id="scanStep_confirm" style="display:none;">
+          <img id="prevImg" class="preview-image" />
+          <div id="aiBox"></div>
+          <div class="field">
+            <label><span class="label-icon">🌿</span> Species</label>
+            <div class="input" style="cursor:pointer; display:flex; align-items:center; justify-content:space-between;" id="specPicker" onclick="openSpecModal()">
+              <span id="specPickerText" style="color:var(--text-muted)">Tap to pick manually</span>
+              <span style="color:var(--text-muted)">▾</span>
+            </div>
+          </div>
+          <div class="field">
+            <label><span class="label-icon">🔢</span> Count</label>
+            <input class="input" type="number" id="treeCount" value="1" min="1" />
+          </div>
+          <button class="btn btn-primary full" id="saveBtn" onclick="saveTree()" style="margin-bottom:10px;">✅ Confirm & Save</button>
+          <button class="btn btn-outline full" onclick="resetScan()">🔄 Retake Photo</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="page" id="pg_history">
+      <div class="sec-header"><h2 class="sec-title"><span class="s-icon">📋</span> My Tree Logs</h2></div>
+      <div id="historyContent"></div>
+    </div>
+
+    <!-- DRIVES -->
+    <div class="page" id="pg_drives">
+      <div class="sec-header"><h2 class="sec-title"><span class="s-icon">📅</span> Plantation Drives</h2></div>
+      <div id="drivesList"></div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="page" id="pg_dashboard">
+      <div class="sec-header"><h2 class="sec-title"><span class="s-icon">📊</span> My Statistics</h2></div>
+      <div id="dashContent"></div>
+    </div>
+
+    <!-- CERTIFICATE -->
+    <div class="page" id="pg_certificate">
+      <div class="cert-wrap">
+        <div class="cert-trophy">🏆</div>
+        <div class="cert-badge">⭐ Verified Volunteer</div>
+        <h2>Your Contribution Certificate</h2>
+        <p class="cert-desc">Download a personalized PDF certificate showing every tree you've planted with Akshar Bharati NGO. Share it on social media and inspire others!</p>
+        <button class="btn btn-primary" style="padding:14px 44px;" onclick="getCert()" id="certBtn">📄 Download Certificate</button>
+      </div>
+    </div>
+
+    <!-- ADMIN -->
+    <div class="page" id="pg_admin">
+      <div class="sec-header"><h2 class="sec-title"><span class="s-icon">⚙️</span> Admin Panel</h2></div>
+      <div class="admin-tabs" id="adminTabs">
+        <button class="active" data-tab="overview">📈 Overview</button>
+        <button data-tab="species">🌿 Species <span class="tab-count" id="tcSpecies">0</span></button>
+        <button data-tab="drives">📅 Drives <span class="tab-count" id="tcDrives">0</span></button>
+        <button data-tab="flagged">🚩 Flagged <span class="tab-count" id="tcFlagged">0</span></button>
+      </div>
+      <div class="a-tab active" id="tab_overview">
+        <div id="adminOverviewStats" class="stats-grid"></div>
+        <div class="chart-section">
+          <div class="chart-box">
+            <h3>📈 Plantation Timeline</h3>
+            <div id="adminTimelineChart" style="height: 180px; width: 100%; display: flex; align-items: center; justify-content: center;"></div>
+          </div>
+          <div class="leaderboard-card">
+            <h3>🏆 Leaderboard</h3>
+            <div id="adminLeaderboardList" class="leaderboard-list"></div>
+          </div>
+        </div>
+      </div>
+      <div class="a-tab" id="tab_species">
+        <div class="inline-form">
+          <div class="field"><label>New Species Name</label><input class="input" id="newSpecName" placeholder="e.g. Neem, Peepal, Banyan..." /></div>
+          <button class="add-btn" onclick="addSpecies()">+ Add</button>
+        </div>
+        <div id="specListAdmin"></div>
+      </div>
+      <div class="a-tab" id="tab_drives">
+        <div class="field"><label>Drive Name</label><input class="input" id="newDrvName" placeholder="e.g. Ganesh Nagar Drive" /></div>
+        <div class="field"><label>Date</label><input class="input" type="date" id="newDrvDate" /></div>
+        <div class="field"><label>Species allowed</label><div class="chip-grid" id="drvChips"></div></div>
+        <button class="add-btn" onclick="createDrive()" style="width:100%; margin-bottom:24px;">📅 Create Drive</button>
+        <h3 style="font-weight:800; margin-bottom:12px;">Existing Drives</h3>
+        <div id="drvListAdmin"></div>
+      </div>
+      <div class="a-tab" id="tab_flagged">
+        <div id="flagList"></div>
+      </div>
+    </div>
+
+    <footer class="app-footer">
+      Built with 💚 by <a href="#">Gagan & Team</a> for <strong>Akshar Bharati NGO</strong> • Vriksha Netra v2.0
+    </footer>
+  </div>
+
+  <!-- ═══ SPECIES MODAL ═══ -->
+  <div class="modal-bg" id="specModal">
+    <div class="modal-box">
+      <h3>🌿 Select Species</h3>
+      <div id="specModalList"></div>
+      <button class="btn btn-outline full" onclick="closeSpecModal()" style="margin-top:16px;">Close</button>
+    </div>
+  </div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   VRIKSHA NETRA v2.0 — ADVANCED WEB CLIENT
+   AI-Powered Tree Tracker with Live Camera Scanning
+   ═══════════════════════════════════════════════════════════════ */
+
+const API = location.origin + '/api';
+let user = null, token = null, species = [], selSpec = null, scanFile = null, scanAI = null, drvSel = [];
+let cameraStream = null, facingMode = 'environment';
+
+// ═══ PARTICLE SYSTEM ═══
+(function(){
+  const c = document.getElementById('particles'), x = c.getContext('2d');
+  let pts = [], mouse = {x: -1000, y: -1000};
+  function sz(){ c.width = innerWidth; c.height = innerHeight; }
+  sz(); addEventListener('resize', sz);
+  addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  for(let i=0;i<50;i++) pts.push({
+    x:Math.random()*c.width, y:Math.random()*c.height,
+    r:Math.random()*1.5+0.3, dx:(Math.random()-0.5)*0.2, dy:(Math.random()-0.5)*0.2,
+    o:Math.random()*0.2+0.02
+  });
+  (function draw(){
+    x.clearRect(0,0,c.width,c.height);
+    pts.forEach(p=>{
+      // Mouse attraction
+      const dm = Math.hypot(p.x-mouse.x, p.y-mouse.y);
+      if(dm < 200){
+        p.dx += (mouse.x - p.x) * 0.00003;
+        p.dy += (mouse.y - p.y) * 0.00003;
+      }
+      x.beginPath(); x.arc(p.x,p.y,p.r,0,Math.PI*2);
+      x.fillStyle=`rgba(74,222,128,${p.o})`; x.fill();
+      p.x+=p.dx; p.y+=p.dy;
+      // Damping
+      p.dx *= 0.999; p.dy *= 0.999;
+      if(p.x<0||p.x>c.width)p.dx*=-1;
+      if(p.y<0||p.y>c.height)p.dy*=-1;
+    });
+    for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){
+      const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);
+      if(d<100){ x.beginPath(); x.moveTo(pts[i].x,pts[i].y); x.lineTo(pts[j].x,pts[j].y);
+        x.strokeStyle=`rgba(74,222,128,${0.025*(1-d/100)})`; x.lineWidth=0.5; x.stroke(); }
+    }
+    requestAnimationFrame(draw);
+  })();
+})();
+
+// ═══ LIVE CLOCK ═══
+function updateClock(){
+  const now = new Date();
+  const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 || 12;
+  const el = $('navClock');
+  if(el) el.textContent = `${String(h12).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} ${ampm}`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ═══ NAVBAR SCROLL SHADOW ═══
+addEventListener('scroll',()=>{document.getElementById('navbar')?.classList.toggle('scrolled',scrollY>10);});
+
+// ═══ TOAST ═══
+const tIcons = {success:'✅',error:'❌',info:'ℹ️'};
+function toast(msg,type='info'){
+  const w=document.getElementById('toasts'), t=document.createElement('div');
+  t.className=`toast ${type}`; t.innerHTML=`<span class="t-icon">${tIcons[type]||'ℹ️'}</span><span class="t-msg">${esc(msg)}</span>`;
+  w.appendChild(t); setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(60px)';t.style.transition='0.4s';},3200); setTimeout(()=>t.remove(),3700);
+}
+
+// ═══ CONFETTI ═══
+function confetti(){
+  const c=document.getElementById('confetti');
+  const colors=['#4ade80','#22c55e','#fbbf24','#60a5fa','#f472b6','#a78bfa','#34d399','#2dd4bf'];
+  for(let i=0;i<100;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    const shape=Math.random()>0.5?'50%':'2px';
+    p.style.cssText=`left:${Math.random()*100}%;width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;background:${colors[i%colors.length]};border-radius:${shape};animation:confettiFall ${1.5+Math.random()*2}s ease-out forwards;animation-delay:${Math.random()*0.5}s;`;
+    c.appendChild(p); setTimeout(()=>p.remove(),4000);
+  }
+}
+
+// ═══ ANIMATED COUNTER ═══
+function animateNum(el,target,duration=1200){
+  if(!el) return;
+  const start=parseInt(el.textContent)||0; if(start===target){el.textContent=target;return;}
+  const startTime=performance.now();
+  (function step(now){
+    const p=Math.min((now-startTime)/duration,1);
+    const ease=1-Math.pow(1-p,3);
+    el.textContent=Math.round(start+(target-start)*ease);
+    if(p<1) requestAnimationFrame(step);
+  })(startTime);
+}
+
+// ═══ API ═══
+async function api(method,path,body,formData=false){
+  const h={}; if(token) h['Authorization']=`Bearer ${token}`;
+  if(!formData) h['Content-Type']='application/json';
+  const o={method,headers:h}; if(body) o.body=formData?body:JSON.stringify(body);
+  const r=await fetch(API+path,o);
+  if(!r.ok){const e=await r.json().catch(()=>({message:'Request failed'}));throw new Error(e.message||'Failed');}
+  const ct=r.headers.get('content-type');
+  return ct&&ct.includes('json')?r.json():r;
+}
+
+// ═══ SESSION ═══
+const save=()=>{localStorage.setItem('tu',JSON.stringify(user));localStorage.setItem('tt',token);};
+const load=()=>{const u=localStorage.getItem('tu'),t=localStorage.getItem('tt');if(u&&t){user=JSON.parse(u);token=t;return true;}return false;};
+const clear=()=>{localStorage.removeItem('tu');localStorage.removeItem('tt');user=null;token=null;};
+const demoUsers=()=>JSON.parse(localStorage.getItem('demoUsers')||'[]');
+const saveDemoUsers=u=>localStorage.setItem('demoUsers',JSON.stringify(u));
+
+// ═══ AUTH ═══
+async function doLogin(e){
+  e.preventDefault();
+  const email=$('l_email').value.trim(), pass=$('l_pass').value, btn=$('l_btn');
+  btn.disabled=true; btn.textContent='Signing in...';
+  try{
+    const d=await api('POST','/auth/login',{email,password:pass});
+    user=d; token=d.token; save(); enter(); toast('Welcome back, '+d.name+'! 🌳','success');
+  }catch(err){
+    const users=demoUsers(), f=users.find(u=>u.email===email&&u.password===pass);
+    if(f){user={_id:f.id,name:f.name,email:f.email,role:f.role||'volunteer',token:'demo-'+Date.now()};token=user.token;save();enter();toast('Welcome, '+f.name+'!','info');}
+    else toast(err.message||'Login failed','error');
+  }
+  btn.disabled=false; btn.textContent='Sign In →';
+}
+async function doRegister(e){
+  e.preventDefault();
+  const name=$('r_name').value.trim(),email=$('r_email').value.trim(),pass=$('r_pass').value,btn=$('r_btn');
+  btn.disabled=true; btn.textContent='Creating...';
+  try{
+    const d=await api('POST','/auth/register',{name,email,password:pass});
+    user=d;token=d.token;save();enter();toast('Account created! Welcome, '+d.name+'! 🌱','success');confetti();
+  }catch(err){
+    const users=demoUsers();
+    if(users.some(u=>u.email===email)){toast('Email already registered','error');}
+    else{const nu={id:Date.now().toString(),name,email,password:pass,role:'volunteer'};users.push(nu);saveDemoUsers(users);user={_id:nu.id,name,email,role:'volunteer',token:'demo-'+Date.now()};token=user.token;save();enter();toast('Account created!','info');confetti();}
+  }
+  btn.disabled=false; btn.textContent='Create Account →';
+}
+function doLogout(){stopCamera();clear();$('appShell').style.display='none';showAuth('login');toast('Logged out','info');}
+
+// ═══ NAV ═══
+function showAuth(v){document.querySelectorAll('.auth-wrap').forEach(e=>e.classList.remove('active'));$(v+'View').classList.add('active');}
+
+function enter(){
+  document.querySelectorAll('.auth-wrap').forEach(e=>e.classList.remove('active'));
+  $('appShell').style.display='flex';
+  const admin=user.role==='admin';
+  $('navName').textContent=user.name;
+  $('navRole').textContent=admin?'Admin':'Volunteer';
+  $('navRole').className='user-role'+(admin?' admin':'');
+  $('userAvatar').textContent=user.name.charAt(0).toUpperCase();
+  $('adminNav').style.display=admin?'':'none';
+  buildHome(); nav('home');
+}
+
+function nav(page){
+  stopCamera();
+  document.querySelectorAll('.page').forEach(p=>{p.classList.remove('active','animate-in');});
+  const pg=$('pg_'+page); if(!pg) return; pg.classList.add('active');
+  requestAnimationFrame(()=>pg.classList.add('animate-in'));
+  document.querySelectorAll('.nav-links button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+  if(page==='home') loadHomeStats();
+  if(page==='drives') loadDrives();
+  if(page==='dashboard') loadDash();
+  if(page==='scan') loadSpecies();
+  if(page==='history') loadHistory();
+  if(page==='admin'){
+    document.querySelectorAll('.admin-tabs button').forEach(x=>x.classList.remove('active'));
+    document.querySelector('.admin-tabs button[data-tab="overview"]').classList.add('active');
+    document.querySelectorAll('.a-tab').forEach(t=>t.classList.remove('active'));
+    $('tab_overview').classList.add('active');
+    loadAdminOverview();
+    fetchAdminBadgeCounts();
+  }
+}
+
+document.querySelectorAll('.nav-links button').forEach(b=>b.addEventListener('click',()=>nav(b.dataset.page)));
+
+// ═══ HOME ═══
+function getTimeGreeting(){
+  const h = new Date().getHours();
+  if(h < 5) return '🌙 Night owl';
+  if(h < 12) return '🌅 Good morning';
+  if(h < 17) return '☀️ Good afternoon';
+  if(h < 21) return '🌇 Good evening';
+  return '🌙 Good night';
+}
+
+function buildHome(){
+  const admin=user.role==='admin';
+  typeGreeting(`${getTimeGreeting()}, ${user.name}`);
+  $('heroSubtitle').textContent=admin?'Admin Dashboard — managing the green mission 🌿':'Your green journey continues. Every tree counts 🌱';
+  let html=`
+    <div class="a-card primary" onclick="nav('scan')"><div class="card-top"><div class="c-icon">📷</div><span class="c-arrow">→</span></div><h3>Scan a Tree</h3><p>Upload or use live camera to identify & log</p></div>
+    <div class="a-card" onclick="nav('history')"><div class="card-top"><div class="c-icon">📋</div><span class="c-arrow">→</span></div><h3>My History</h3><p>Browse all your tree planting logs</p></div>
+    <div class="a-card" onclick="nav('drives')"><div class="card-top"><div class="c-icon">📅</div><span class="c-arrow">→</span></div><h3>Drives</h3><p>View upcoming plantation events & drives</p></div>
+    <div class="a-card" onclick="nav('dashboard')"><div class="card-top"><div class="c-icon">📊</div><span class="c-arrow">→</span></div><h3>My Stats</h3><p>Total trees & species breakdown with charts</p></div>
+    <div class="a-card" onclick="nav('certificate')"><div class="card-top"><div class="c-icon">🏆</div><span class="c-arrow">→</span></div><h3>Get Certificate</h3><p>Download your contribution certificate</p></div>`;
+  if(admin) html+=`<div class="a-card admin-card" onclick="nav('admin')"><div class="card-top"><div class="c-icon">⚙️</div><span class="c-arrow">→</span></div><h3>Admin Panel</h3><p>Manage species, drives & review flagged entries</p></div>`;
+  $('homeCards').innerHTML=html;
+
+  // Activity Feed
+  loadActivityFeed();
+}
+
+function typeGreeting(text){
+  const el=$('greetingText'); el.innerHTML=''; let i=0;
+  const cursor=document.createElement('span'); cursor.className='typed-cursor';
+  el.appendChild(cursor);
+  function type(){
+    if(i<text.length){ el.insertBefore(document.createTextNode(text[i]),cursor); i++; setTimeout(type,35); }
+  }
+  type();
+}
+
+async function loadHomeStats(){
+  try{
+    const[stats,drives]=await Promise.all([api('GET','/dashboard/my-stats').catch(()=>null),api('GET','/drives').catch(()=>[])]);
+    if(stats){
+      animateNum($('heroTrees'),stats.totalTrees||0);
+      animateNum($('heroSpecies'),stats.speciesBreakdown?.length||0);
+      // Calculate streak (simplified)
+      animateNum($('heroStreak'), Math.min(stats.totalTrees||0, 7));
+    }
+    animateNum($('heroDrives'),Array.isArray(drives)?drives.length:0);
+  }catch{}
+}
+
+async function loadActivityFeed(){
+  const section = $('activitySection');
+  try {
+    const logs = await api('GET','/tree-logs/my').catch(()=>[]);
+    if(!logs || !logs.length){
+      section.innerHTML = '';
+      return;
+    }
+    const recent = logs.slice(0,5);
+    let html = `<h3>⚡ Recent Activity</h3><div class="activity-feed">`;
+    recent.forEach((log, i) => {
+      const date = new Date(log.createdAt);
+      const timeAgo = getTimeAgo(date);
+      const specName = log.species?.name || log.aiRawGuess || 'Unknown species';
+      html += `
+        <div class="activity-item" style="animation-delay:${i*0.05}s">
+          <div class="activity-icon scan">🌱</div>
+          <div class="activity-content">
+            <div class="act-text">Planted ${log.count||1}× <strong>${esc(specName)}</strong></div>
+            <div class="act-time">${timeAgo}</div>
+          </div>
+        </div>`;
+    });
+    html += `</div>`;
+    section.innerHTML = html;
+  } catch {
+    section.innerHTML = '';
+  }
+}
+
+function getTimeAgo(date){
+  const seconds = Math.floor((new Date() - date) / 1000);
+  if(seconds < 60) return 'Just now';
+  if(seconds < 3600) return Math.floor(seconds/60) + 'm ago';
+  if(seconds < 86400) return Math.floor(seconds/3600) + 'h ago';
+  if(seconds < 604800) return Math.floor(seconds/86400) + 'd ago';
+  return date.toLocaleDateString('en-IN', {day:'numeric',month:'short'});
+}
+
+// ═══ SPECIES ═══
+async function loadSpecies(){try{species=await api('GET','/species');}catch{species=[];}}
+
+// ═══ SCAN MODES ═══
+function setScanMode(mode){
+  document.querySelectorAll('#scanModeTabs button').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+  $('scanStep_upload').style.display = mode==='upload' ? 'block' : 'none';
+  $('scanStep_live').style.display = mode==='live' ? 'block' : 'none';
+  $('scanStep_id').style.display = 'none';
+  $('scanStep_confirm').style.display = 'none';
+  if(mode==='live') startCamera();
+  else stopCamera();
+}
+
+// ═══ LIVE CAMERA ═══
+async function startCamera(){
+  try{
+    const constraints = {
+      video: { facingMode: facingMode, width: {ideal: 1280}, height: {ideal: 720} },
+      audio: false
+    };
+    cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+    const video = $('cameraVideo');
+    video.srcObject = cameraStream;
+    await video.play();
+    toast('Camera started!','success');
+  } catch(err) {
+    toast('Camera access denied. Please allow camera permission.','error');
+    console.error('Camera error:', err);
+    setScanMode('upload');
+  }
+}
+
+function stopCamera(){
+  if(cameraStream){
+    cameraStream.getTracks().forEach(t=>t.stop());
+    cameraStream = null;
+  }
+  const video = $('cameraVideo');
+  if(video) video.srcObject = null;
+}
+
+async function switchCamera(){
+  facingMode = facingMode === 'environment' ? 'user' : 'environment';
+  stopCamera();
+  await startCamera();
+  toast(`Switched to ${facingMode === 'user' ? 'front' : 'back'} camera`,'info');
+}
+
+function capturePhoto(){
+  const video = $('cameraVideo');
+  const canvas = $('cameraCanvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0);
+
+  canvas.toBlob(blob => {
+    if(!blob) { toast('Capture failed','error'); return; }
+    scanFile = new File([blob], 'capture.jpg', {type: 'image/jpeg'});
+    $('prevImg').src = canvas.toDataURL('image/jpeg');
+    stopCamera();
+    $('scanStep_live').style.display = 'none';
+    $('scanStep_upload').style.display = 'none';
+    $('scanStep_id').style.display = 'block';
+    $('scanStep_confirm').style.display = 'none';
+    identifyScan();
+    toast('Photo captured! Analyzing...','info');
+  }, 'image/jpeg', 0.9);
+}
+
+// ═══ SCAN — UPLOAD ═══
+const dz=$('dropZone'), fi=$('fileInput');
+dz.addEventListener('click',()=>fi.click());
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('dragover');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('dragover'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('dragover');if(e.dataTransfer.files[0])startScan(e.dataTransfer.files[0]);});
+fi.addEventListener('change',e=>{if(e.target.files[0])startScan(e.target.files[0]);});
+
+function startScan(file){
+  scanFile=file;
+  const url=URL.createObjectURL(file);
+  $('prevImg').src=url;
+  $('scanStep_upload').style.display='none';
+  $('scanStep_live').style.display='none';
+  $('scanStep_id').style.display='block';
+  $('scanStep_confirm').style.display='none';
+  identifyScan();
+}
+
+async function identifyScan(){
+  try{
+    const fd=new FormData(); fd.append('photo',scanFile);
+    scanAI=await api('POST','/tree-logs/identify',fd,true);
+    if(scanAI.matched){const f=species.find(s=>s._id===scanAI.speciesId);selSpec=f||{_id:scanAI.speciesId,name:scanAI.speciesName};}
+    else selSpec=null;
+  }catch{scanAI={matched:false,rawGuess:null,confidence:0};selSpec=null;}
+  showConfirm();
+}
+
+function showConfirm(){
+  $('scanStep_id').style.display='none';
+  $('scanStep_confirm').style.display='block';
+  const b=$('aiBox');
+  if(scanAI?.matched) b.innerHTML=`<div class="ai-box ok"><span class="ai-icon">✅</span><div><h4>Identified: ${esc(selSpec?.name||'')}</h4><p>AI confidence: ${scanAI.confidence}%</p></div></div>`;
+  else b.innerHTML=`<div class="ai-box warn"><span class="ai-icon">⚠️</span><div><h4>No confident match</h4>${scanAI?.rawGuess?`<p>AI guessed: ${esc(scanAI.rawGuess)}</p>`:''}<p>Flagged for admin review unless you pick manually.</p></div></div>`;
+  updSpecPicker();
+}
+
+function updSpecPicker(){
+  const el=$('specPickerText');
+  if(selSpec){el.textContent=selSpec.name;el.style.color='var(--accent)';}
+  else{el.textContent='Tap to pick manually';el.style.color='var(--text-muted)';}
+}
+function openSpecModal(){
+  $('specModalList').innerHTML=species.map(s=>`<div class="modal-row" onclick="pickSpec('${s._id}','${esc(s.name)}')">${esc(s.name)}</div>`).join('');
+  $('specModal').classList.add('open');
+}
+function closeSpecModal(){$('specModal').classList.remove('open');}
+function pickSpec(id,name){selSpec={_id:id,name};updSpecPicker();closeSpecModal();}
+
+async function saveTree(){
+  const btn=$('saveBtn'); btn.disabled=true; btn.textContent='Saving...';
+  try{
+    const fd=new FormData(); fd.append('photo',scanFile);
+    if(selSpec) fd.append('speciesId',selSpec._id);
+    fd.append('count',$('treeCount').value||'1');
+    if(scanAI?.rawGuess) fd.append('rawGuess',scanAI.rawGuess);
+    if(scanAI?.confidence) fd.append('aiConfidence',String(scanAI.confidence));
+    await api('POST','/tree-logs',fd,true);
+    toast('Tree log saved! 🌳','success'); confetti(); resetScan(); nav('home');
+  }catch(err){toast(err.message||'Save failed','error');}
+  btn.disabled=false; btn.textContent='✅ Confirm & Save';
+}
+
+function resetScan(){
+  scanFile=null;scanAI=null;selSpec=null;
+  $('scanStep_upload').style.display='block';$('scanStep_live').style.display='none';
+  $('scanStep_id').style.display='none';$('scanStep_confirm').style.display='none';
+  fi.value='';$('treeCount').value='1';
+  document.querySelectorAll('#scanModeTabs button').forEach(b=>b.classList.toggle('active',b.dataset.mode==='upload'));
+}
+
+// ═══ HISTORY ═══
+async function loadHistory(){
+  const c = $('historyContent');
+  c.innerHTML = '<div class="spinner"></div>';
+  try {
+    const logs = await api('GET', '/tree-logs/my');
+    if(!logs || !logs.length){
+      c.innerHTML = '<div class="empty"><div class="e-icon">🌱</div><p>No tree logs yet. Go scan your first tree!</p></div>';
+      return;
+    }
+    let totalCount = logs.reduce((sum,l) => sum + (l.count||1), 0);
+    let html = `
+      <div style="display:flex; align-items:center; gap:14px; margin-bottom:22px; padding:16px 20px; background:var(--bg-glass); border:1px solid var(--border); border-radius:var(--radius-md);">
+        <div style="font-size:1.8rem;">📊</div>
+        <div>
+          <div style="font-size:1.3rem; font-weight:900; font-family:var(--mono); color:var(--accent);">${totalCount}</div>
+          <div style="font-size:0.68rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; font-weight:700;">Total Trees Logged</div>
+        </div>
+      </div>
+    `;
+    logs.forEach((log, i) => {
+      const date = new Date(log.createdAt);
+      const specName = log.species?.name || 'Unidentified';
+      const thumb = log.photoUrl ? `<img src="${log.photoUrl}" alt="tree" />` : '🌳';
+      html += `
+        <div class="history-item" style="animation-delay:${i*0.04}s; opacity:0; animation: staggerIn 0.4s var(--ease-spring) forwards;">
+          <div class="history-thumb">${thumb}</div>
+          <div class="history-info">
+            <div class="hi-species">${log.flaggedForReview ? '🚩 ' : ''}${esc(specName)}</div>
+            <div class="hi-meta">
+              <span>📅 ${date.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</span>
+              <span>⏰ ${date.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</span>
+            </div>
+          </div>
+          <div class="history-count">×${log.count||1}</div>
+        </div>`;
+    });
+    c.innerHTML = html;
+  } catch(err) {
+    c.innerHTML = '<div class="empty"><div class="e-icon">⚠️</div><p>Could not load history.</p></div>';
+  }
+}
+
+// ═══ DRIVES ═══
+async function loadDrives(){
+  const c=$('drivesList'); c.innerHTML='<div class="spinner"></div>';
+  try{
+    const d=await api('GET','/drives');
+    if(!d.length){c.innerHTML='<div class="empty"><div class="e-icon">📅</div><p>No drives scheduled yet.</p></div>';return;}
+    c.innerHTML=d.map((v,i)=>`
+      <div class="drive-tile" style="animation-delay:${i*0.06}s">
+        <div class="drive-top"><h3>${esc(v.name)}</h3><span class="drive-date-badge">${new Date(v.date).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</span></div>
+        ${v.locationName?`<div class="drive-loc">📍 ${esc(v.locationName)}</div>`:''}
+        <div class="species-section"><div class="sl">Species for this drive</div><div class="tag-row">${v.speciesAllowed?.length?v.speciesAllowed.map(s=>`<span class="s-tag">${esc(s.name)}</span>`).join(''):'<span class="s-tag">All species</span>'}</div></div>
+      </div>`).join('');
+  }catch{c.innerHTML='<div class="empty"><div class="e-icon">⚠️</div><p>Could not load drives.</p></div>';}
+}
+
+// ═══ DASHBOARD ═══
+async function loadDash(){
+  const c=$('dashContent'); c.innerHTML=`<div class="stats-grid"><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div></div>`;
+  try{
+    const [s, leaderboard] = await Promise.all([
+      api('GET', '/dashboard/my-stats'),
+      api('GET', '/dashboard/leaderboard').catch(()=>[])
+    ]);
+    const total=s.totalTrees||0, bd=s.speciesBreakdown||[];
+    let html=`<div class="stats-grid">
+      <div class="stat-tile"><div class="stat-num" id="dn_trees">0</div><div class="stat-lbl">Trees Planted</div></div>
+      <div class="stat-tile"><div class="stat-num" id="dn_species">0</div><div class="stat-lbl">Species</div></div>
+      <div class="stat-tile"><div class="stat-num" id="dn_avg">0</div><div class="stat-lbl">Avg / Species</div></div>
+    </div>`;
+    if(bd.length){
+      html+=`<div class="chart-section">
+        <div class="chart-box"><h3>🍩 Species Distribution</h3><div class="donut-wrap">${buildDonut(bd,total)}</div></div>
+        <div class="chart-box"><h3>📊 Breakdown</h3><div class="bar-list" id="barList">${buildBars(bd,total)}</div></div>
+      </div>`;
+    } else {
+      html+='<div class="empty"><div class="e-icon">🌱</div><p>No entries yet. Go scan a tree!</p></div>';
+    }
+
+    if (leaderboard && leaderboard.length) {
+      html += `
+        <div class="leaderboard-card" style="margin-top: 24px;">
+          <h3>🏆 Top Contributors</h3>
+          <div class="leaderboard-list">
+            ${leaderboard.map((v, index) => {
+              const rank = index + 1;
+              let rankClass = '';
+              if (rank === 1) rankClass = 'rank-1';
+              else if (rank === 2) rankClass = 'rank-2';
+              else if (rank === 3) rankClass = 'rank-3';
+              return `
+                <div class="leader-row">
+                  <div class="leader-left">
+                    <div class="leader-rank ${rankClass}">${rank === 1 ? '👑' : rank}</div>
+                    <span class="leader-name">${esc(v.name)}</span>
+                  </div>
+                  <span class="leader-val">${v.total} trees</span>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    c.innerHTML=html;
+    setTimeout(()=>{
+      animateNum($('dn_trees'),total);
+      animateNum($('dn_species'),bd.length);
+      animateNum($('dn_avg'),bd.length?Math.round(total/bd.length):0);
+    },100);
+  }catch{c.innerHTML='<div class="empty"><div class="e-icon">⚠️</div><p>Could not load stats.</p></div>';}
+}
+
+function buildDonut(breakdown,total){
+  const colors=['#4ade80','#22c55e','#16a34a','#15803d','#166534','#34d399','#2dd4bf','#6ee7b7'];
+  const size=170, cx=size/2, cy=size/2, r=65, sw=20;
+  let acc=0;
+  let paths='';
+  breakdown.forEach((s,i)=>{
+    const pct=total?s.total/total:0;
+    const startAngle=acc*2*Math.PI-Math.PI/2;
+    const endAngle=(acc+pct)*2*Math.PI-Math.PI/2;
+    const largeArc=pct>0.5?1:0;
+    const x1=cx+r*Math.cos(startAngle), y1=cy+r*Math.sin(startAngle);
+    const x2=cx+r*Math.cos(endAngle), y2=cy+r*Math.sin(endAngle);
+    paths+=`<path d="M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2}" fill="none" stroke="${colors[i%colors.length]}" stroke-width="${sw}" stroke-linecap="round" opacity="0" style="animation: donutDraw 0.8s ${i*0.15}s ease forwards;"><title>${esc(s.name)}: ${s.total}</title></path>`;
+    acc+=pct;
+  });
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <style>@keyframes donutDraw{from{opacity:0;stroke-dashoffset:200;}to{opacity:1;stroke-dashoffset:0;}}</style>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="${sw}"/>
+    ${paths}
+  </svg><div class="donut-center"><div class="dc-num">${total}</div><div class="dc-lbl">Total</div></div>`;
+}
+
+function buildBars(bd,total){
+  const maxVal=Math.max(...bd.map(s=>s.total));
+  return bd.map(s=>{
+    const pct=maxVal?Math.round(s.total/maxVal*100):0;
+    return `<div class="bar-item"><span class="bar-label" title="${esc(s.name)}">${esc(s.name||'?')}</span><div class="bar-track"><div class="bar-fill animated" style="width:${pct}%">${s.total}</div></div></div>`;
+  }).join('');
+}
+
+// ═══ CERTIFICATE ═══
+function getCert(){
+  const btn=$('certBtn'); btn.disabled=true; btn.textContent='Generating...';
+  try{window.open(API+'/certificate?token='+encodeURIComponent(token),'_blank');toast('Certificate opened! 📄','success');}
+  catch{toast('Could not generate certificate.','error');}
+  setTimeout(()=>{btn.disabled=false;btn.textContent='📄 Download Certificate';},1500);
+}
+
+// ═══ ADMIN: OVERVIEW ═══
+function getMonthName(m){
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return months[m - 1] || '';
+}
+
+function buildTimelineChart(timeSeries){
+  if(!timeSeries || !timeSeries.length) return `<div class="empty" style="padding: 20px 0;"><p>No timeline data available</p></div>`;
+  const width = 500, height = 180, padding = 30;
+  const chartWidth = width - 2 * padding;
+  const chartHeight = height - 2 * padding;
+  const maxTotal = Math.max(...timeSeries.map(d => d.total), 10);
+  const points = timeSeries.map((d, index) => {
+    const x = padding + (index / Math.max(timeSeries.length - 1, 1)) * chartWidth;
+    const y = padding + chartHeight - (d.total / maxTotal) * chartHeight;
+    return { x, y, label: `${getMonthName(d._id.month)} ${d._id.year}`, val: d.total };
+  });
+  let pathD = `M ${points[0].x} ${points[0].y}`;
+  let areaD = `M ${points[0].x} ${padding + chartHeight} L ${points[0].x} ${points[0].y}`;
+  for(let i=1; i<points.length; i++){
+    pathD += ` L ${points[i].x} ${points[i].y}`;
+    areaD += ` L ${points[i].x} ${points[i].y}`;
+  }
+  areaD += ` L ${points[points.length-1].x} ${padding + chartHeight} Z`;
+  let gridLines = '';
+  for(let i=0; i<=4; i++){
+    const y = padding + (i / 4) * chartHeight;
+    const val = Math.round(maxTotal - (i / 4) * maxTotal);
+    gridLines += `<line x1="${padding}" y1="${y}" x2="${width - padding}" y2="${y}" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <text x="${padding - 5}" y="${y + 4}" fill="rgba(255,255,255,0.25)" font-size="9" text-anchor="end" font-family="var(--mono)">${val}</text>`;
+  }
+  let xLabels = '';
+  points.forEach((p, i) => {
+    if (points.length < 8 || i % Math.ceil(points.length / 6) === 0 || i === points.length - 1) {
+      xLabels += `<text x="${p.x}" y="${height - 10}" fill="rgba(255,255,255,0.35)" font-size="9" text-anchor="middle">${p.label.split(' ')[0]}</text>`;
+    }
+  });
+  let dots = '';
+  points.forEach((p) => {
+    dots += `<g class="chart-dot-group"><circle cx="${p.x}" cy="${p.y}" r="4" fill="var(--accent)" stroke="#030a06" stroke-width="2" /><circle cx="${p.x}" cy="${p.y}" r="8" fill="var(--accent)" opacity="0" class="hover-trigger"><title>${p.label}: ${p.val} trees</title></circle></g>`;
+  });
+  return `<svg width="100%" height="100%" viewBox="0 0 ${width} ${height}" style="overflow: visible;">
+      <defs><linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--accent)" stop-opacity="0.25"/><stop offset="100%" stop-color="var(--accent)" stop-opacity="0.0"/></linearGradient></defs>
+      ${gridLines}<path d="${areaD}" fill="url(#areaGrad)" /><path d="${pathD}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />${xLabels}${dots}</svg>`;
+}
+
+async function loadAdminOverview(){
+  const sList = $('adminOverviewStats');
+  const tChart = $('adminTimelineChart');
+  const lList = $('adminLeaderboardList');
+  sList.innerHTML = `<div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div>`;
+  tChart.innerHTML = `<div class="spinner"></div>`;
+  lList.innerHTML = `<div class="skeleton skeleton-bar"></div><div class="skeleton skeleton-bar w60"></div><div class="skeleton skeleton-bar w40"></div>`;
+  try {
+    const data = await api('GET', '/dashboard/overview');
+    const topVol = data.topVolunteers && data.topVolunteers[0] ? data.topVolunteers[0].total : 0;
+    sList.innerHTML = `
+      <div class="stat-tile"><div class="stat-num" id="adn_total_trees">0</div><div class="stat-lbl">Org Trees Planted</div></div>
+      <div class="stat-tile"><div class="stat-num" id="adn_flagged_count">0</div><div class="stat-lbl">Flagged for Review</div></div>
+      <div class="stat-tile"><div class="stat-num" id="adn_top_vol_trees">0</div><div class="stat-lbl">Top Volunteer Record</div></div>
+    `;
+    setTimeout(() => {
+      animateNum($('adn_total_trees'), data.totalTrees || 0);
+      animateNum($('adn_flagged_count'), data.flaggedCount || 0);
+      animateNum($('adn_top_vol_trees'), topVol);
+    }, 100);
+    tChart.innerHTML = buildTimelineChart(data.timeSeries);
+    if (data.topVolunteers && data.topVolunteers.length) {
+      lList.innerHTML = data.topVolunteers.map((v, index) => {
+        const rank = index + 1;
+        let rankClass = '';
+        if (rank === 1) rankClass = 'rank-1';
+        else if (rank === 2) rankClass = 'rank-2';
+        else if (rank === 3) rankClass = 'rank-3';
+        return `<div class="leader-row"><div class="leader-left"><div class="leader-rank ${rankClass}">${rank === 1 ? '👑' : rank}</div><span class="leader-name">${esc(v.name)}</span></div><span class="leader-val">${v.total} trees</span></div>`;
+      }).join('');
+    } else {
+      lList.innerHTML = '<div class="empty"><p>No volunteers listed yet.</p></div>';
+    }
+  } catch (err) {
+    sList.innerHTML = '<div class="empty"><p>Could not load overview stats.</p></div>';
+    tChart.innerHTML = '';
+    lList.innerHTML = '';
+    toast('Error loading admin overview: ' + err.message, 'error');
+  }
+}
+
+async function fetchAdminBadgeCounts(){
+  try {
+    const [spec, drvs, flags] = await Promise.all([
+      api('GET', '/species').catch(()=>[]),
+      api('GET', '/drives').catch(()=>[]),
+      api('GET', '/tree-logs?flaggedOnly=true').catch(()=>[])
+    ]);
+    $('tcSpecies').textContent = spec.length;
+    $('tcDrives').textContent = drvs.length;
+    $('tcFlagged').textContent = flags.length;
+  } catch {}
+}
+
+function loadAdminTab(tab){
+  if(tab==='overview') loadAdminOverview();
+  if(tab==='species') loadAdminSpecies();
+  if(tab==='drives') loadAdminDrives();
+  if(tab==='flagged') loadFlagged();
+}
+
+// ═══ ADMIN: SPECIES ═══
+async function loadAdminSpecies(){
+  try{
+    species=await api('GET','/species');
+    $('tcSpecies').textContent=species.length;
+    $('specListAdmin').innerHTML=species.map(s=>
+      `<div class="data-row"><span class="dr-name">🌿 ${esc(s.name)}</span><span class="dr-val">#${s._id?.slice(-4)||''}</span></div>`
+    ).join('');
+  }catch{}
+}
+async function addSpecies(){
+  const inp=$('newSpecName'),name=inp.value.trim(); if(!name)return;
+  try{await api('POST','/species',{name});inp.value='';toast('Species added! 🌿','success');loadAdminSpecies();}
+  catch(e){toast(e.message||'Error','error');}
+}
+
+// ═══ ADMIN: DRIVES ═══
+async function loadAdminDrives(){
+  try{
+    const[drives,sp]=await Promise.all([api('GET','/drives'),api('GET','/species')]);
+    species=sp; $('tcDrives').textContent=drives.length;
+    $('drvChips').innerHTML=sp.map(s=>`<div class="chip" data-id="${s._id}" onclick="togDrv(this,'${s._id}')">${esc(s.name)}</div>`).join('');
+    drvSel=[];
+    $('drvListAdmin').innerHTML=drives.map(d=>`<div class="data-row"><span class="dr-name">${esc(d.name)}</span><span class="dr-val">${new Date(d.date).toLocaleDateString('en-IN')}</span></div>`).join('');
+  }catch{}
+}
+function togDrv(el,id){el.classList.toggle('on');drvSel=el.classList.contains('on')?[...drvSel,id]:drvSel.filter(s=>s!==id);}
+async function createDrive(){
+  const name=$('newDrvName').value.trim(),date=$('newDrvDate').value;
+  if(!name||!date){toast('Enter name & date','error');return;}
+  try{await api('POST','/drives',{name,date,speciesAllowed:drvSel});$('newDrvName').value='';$('newDrvDate').value='';toast('Drive created! 📅','success');loadAdminDrives();}
+  catch(e){toast(e.message||'Error','error');}
+}
+
+// ═══ ADMIN: FLAGGED ═══
+async function loadFlagged(){
+  const c=$('flagList');
+  try{
+    const[logs,sp]=await Promise.all([api('GET','/tree-logs?flaggedOnly=true'),api('GET','/species')]);
+    species=sp; $('tcFlagged').textContent=logs.length;
+    if(!logs.length){c.innerHTML='<div class="empty"><div class="e-icon">✅</div><p>No flagged entries. All clear!</p></div>';return;}
+    c.innerHTML=logs.map(l=>`
+      <div class="flag-card">
+        <div class="fc-user">${esc(l.user?.name||'Unknown')}</div>
+        <div class="fc-guess">🤖 AI guessed: ${esc(l.aiRawGuess||'unknown')}</div>
+        <div class="fc-label">Assign correct species</div>
+        <div class="resolve-row">${sp.map(s=>`<div class="r-chip" onclick="resolve('${l._id}','${s._id}')">${esc(s.name)}</div>`).join('')}</div>
+      </div>`).join('');
+  }catch{c.innerHTML='<div class="empty"><div class="e-icon">⚠️</div><p>Could not load flagged entries.</p></div>';}
+}
+async function resolve(lid,sid){
+  try{await api('PUT',`/tree-logs/${lid}/review`,{speciesId:sid});toast('Resolved! ✅','success');loadFlagged();}
+  catch{toast('Error resolving','error');}
+}
+
+// ═══ ADMIN TABS ═══
+document.querySelectorAll('.admin-tabs button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.admin-tabs button').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  document.querySelectorAll('.a-tab').forEach(t=>t.classList.remove('active'));
+  $('tab_'+b.dataset.tab).classList.add('active');
+  loadAdminTab(b.dataset.tab);
+}));
+
+// ═══ 3D CARD TILT EFFECT ═══
+document.addEventListener('mousemove', (e) => {
+  document.querySelectorAll('.a-card').forEach(card => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    if(x >= 0 && x <= rect.width && y >= 0 && y <= rect.height){
+      const rotX = ((y - rect.height/2) / rect.height) * -6;
+      const rotY = ((x - rect.width/2) / rect.width) * 6;
+      card.style.transform = `translateY(-6px) scale(1.02) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+    }
+  });
+});
+document.addEventListener('mouseleave', () => {
+  document.querySelectorAll('.a-card').forEach(card => {
+    card.style.transform = '';
+  });
+});
+
+// ═══ UTIL ═══
+function $(id){return document.getElementById(id);}
+function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+// ═══ INIT ═══
+if(load()) enter();
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: vriksha-netra-backend
+    runtime: node
+    plan: free
+    rootDir: tree-app-backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CORS_ORIGIN
+        value: '*'
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGO_URI
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: PLANT_ID_API_KEY
+        sync: false
+      - key: PLANTNET_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: GOOGLE_CLIENT_IDS
+        sync: false

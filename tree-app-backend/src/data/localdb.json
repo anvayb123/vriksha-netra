@@ -1,0 +1,661 @@
+{
+  "users": [
+    {
+      "name": "Gagan",
+      "email": "gagangagan22877@gmail.com",
+      "password": "$2a$10$lhEYdPRnSEHxJUUijmkaUuwTsfMCv7vSpnlNTNSDhvfGfybjijU2O",
+      "role": "volunteer",
+      "_id": "msiie6ih-k90przqu",
+      "createdAt": "2026-08-07T05:33:21.401Z",
+      "updatedAt": "2026-08-07T05:33:21.401Z"
+    },
+    {
+      "_id": "u-admin-1",
+      "name": "Akshar Admin",
+      "email": "admin@akshar.org",
+      "password": "$2a$10$ehuA6.JhgngIozYSaVlobOLMN08mpuek7lROo67d7Skc7SUcdmewa",
+      "role": "admin",
+      "createdAt": "2026-08-09T12:19:50.798Z",
+      "updatedAt": "2026-08-09T12:19:50.798Z"
+    },
+    {
+      "_id": "u-vol-1",
+      "name": "Gagan Kumar",
+      "email": "volunteer@akshar.org",
+      "password": "$2a$10$/NoBfkSIheY2sM0tku0PFOSBD7KHyUUGxBSxY4/wjt8pgqnRC/WIW",
+      "role": "volunteer",
+      "createdAt": "2026-08-09T12:19:50.798Z",
+      "updatedAt": "2026-08-09T12:19:50.798Z"
+    }
+  ],
+  "species": [
+    {
+      "_id": "mslrsmyl-32yy5kzk",
+      "name": "Neem",
+      "commonNames": [],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-09T12:19:50.798Z",
+      "updatedAt": "2026-08-09T12:19:50.798Z"
+    },
+    {
+      "_id": "mslrsmyl-v2cgdjo4",
+      "name": "Peepal",
+      "commonNames": [],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-09T12:19:50.798Z",
+      "updatedAt": "2026-08-09T12:19:50.798Z"
+    },
+    {
+      "_id": "mslrsmyl-qt7ike9b",
+      "name": "Banyan",
+      "commonNames": [],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-09T12:19:50.798Z",
+      "updatedAt": "2026-08-09T12:19:50.798Z"
+    },
+    {
+      "_id": "mslrsmyl-zei4p4oq",
+      "name": "Gulmohar",
+      "commonNames": [],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-09T12:19:50.798Z",
+      "updatedAt": "2026-08-09T12:19:50.798Z"
+    },
+    {
+      "_id": "mslrsmyl-bo4jj1b5",
+      "name": "Mango",
+      "commonNames": [],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-09T12:19:50.798Z",
+      "updatedAt": "2026-08-09T12:19:50.798Z"
+    },
+    {
+      "_id": "mslrsmyl-ac35gs4i",
+      "name": "Mahogany",
+      "commonNames": [],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-09T12:19:50.798Z",
+      "updatedAt": "2026-08-09T12:19:50.798Z"
+    },
+    {
+      "_id": "mslrsmyl-w29uu1di",
+      "name": "Jamun",
+      "commonNames": [],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-09T12:19:50.798Z",
+      "updatedAt": "2026-08-09T12:19:50.798Z"
+    },
+    {
+      "_id": "mslrsmym-7vpitlla",
+      "name": "Ashoka",
+      "commonNames": [],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-09T12:19:50.798Z",
+      "updatedAt": "2026-08-09T12:19:50.798Z"
+    },
+    {
+      "_id": "msnh231f-9e5ada7k",
+      "name": "Tulsi",
+      "commonNames": [
+        "तुलसी",
+        "Ocimum tenuiflorum"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231g-ddhi9vkd",
+      "name": "Amla",
+      "commonNames": [
+        "आँवला",
+        "Phyllanthus emblica"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231g-8j6j8prm",
+      "name": "Teak",
+      "commonNames": [
+        "सागौन",
+        "Tectona grandis"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231g-kas26wes",
+      "name": "Bamboo",
+      "commonNames": [
+        "बांस",
+        "Bambusa vulgaris"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231h-mb2owztw",
+      "name": "Coconut",
+      "commonNames": [
+        "नारियल",
+        "Cocos nucifera"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231h-7sho1o2l",
+      "name": "Tamarind",
+      "commonNames": [
+        "इमली",
+        "Tamarindus indica"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231h-585j50z3",
+      "name": "Sal",
+      "commonNames": [
+        "साल",
+        "Shorea robusta"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231h-n36sbbdu",
+      "name": "Sandalwood",
+      "commonNames": [
+        "चंदन",
+        "Santalum album"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231h-0puavkc8",
+      "name": "Jackfruit",
+      "commonNames": [
+        "कटहल",
+        "Artocarpus heterophyllus"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231h-gxiiwx9z",
+      "name": "Curry Leaf",
+      "commonNames": [
+        "कड़ी पत्ता",
+        "Murraya koenigii"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231i-n50x0zco",
+      "name": "Moringa",
+      "commonNames": [
+        "सहजन",
+        "Moringa oleifera"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231i-jacceohe",
+      "name": "Bougainvillea",
+      "commonNames": [
+        "बोगनविलिया",
+        "Bougainvillea spectabilis"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231i-x17igeq3",
+      "name": "Marigold",
+      "commonNames": [
+        "गेंदा",
+        "Tagetes erecta"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231i-6tlwh78s",
+      "name": "Hibiscus",
+      "commonNames": [
+        "गुड़हल",
+        "Hibiscus rosa-sinensis"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231i-e7agilr2",
+      "name": "Jasmine",
+      "commonNames": [
+        "चमेली",
+        "Jasminum sambac"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231i-j48ekq37",
+      "name": "Rose",
+      "commonNames": [
+        "गुलाब",
+        "Rosa indica"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231i-52zxg5x9",
+      "name": "Aloe Vera",
+      "commonNames": [
+        "एलोवेरा",
+        "Aloe barbadensis"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231i-bkz5p12a",
+      "name": "Palash",
+      "commonNames": [
+        "पलाश",
+        "Butea monosperma"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231i-3mahjd0u",
+      "name": "Amaltas",
+      "commonNames": [
+        "अमलतास",
+        "Cassia fistula"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231i-bwiueqib",
+      "name": "Areca Palm",
+      "commonNames": [
+        "सुपारी",
+        "Areca catechu"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231i-bnd20ouj",
+      "name": "Kadamba",
+      "commonNames": [
+        "कदम्ब",
+        "Neolamarckia cadamba"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231i-vspmfp8k",
+      "name": "Sheesham",
+      "commonNames": [
+        "शीशम",
+        "Dalbergia sissoo"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231i-smw0djti",
+      "name": "Custard Apple",
+      "commonNames": [
+        "सीताफल",
+        "Annona squamosa"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231i-5wno1t96",
+      "name": "Guava",
+      "commonNames": [
+        "अमरूद",
+        "Psidium guajava"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231j-l4gfh2gh",
+      "name": "Papaya",
+      "commonNames": [
+        "पपीता",
+        "Carica papaya"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231j-hv5thaa0",
+      "name": "Nag Champa",
+      "commonNames": [
+        "नाग चम्पा",
+        "Calophyllum inophyllum"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231j-irov5sia",
+      "name": "Champa",
+      "commonNames": [
+        "चम्पा",
+        "Michelia champaca"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231j-1278myxf",
+      "name": "Parijat",
+      "commonNames": [
+        "पारिजात",
+        "Nyctanthes arbor-tristis"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231j-ht7nh4ky",
+      "name": "Indian Laburnum",
+      "commonNames": [
+        "अमलतास",
+        "Cassia fistula"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231j-ryaooklf",
+      "name": "Bauhinia",
+      "commonNames": [
+        "कचनार",
+        "Bauhinia variegata"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231j-y5iegws7",
+      "name": "Chinar",
+      "commonNames": [
+        "चिनार",
+        "Platanus orientalis"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231j-lgeq6qh9",
+      "name": "Deodar",
+      "commonNames": [
+        "देवदार",
+        "Cedrus deodara"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231j-c407ywpx",
+      "name": "Rhododendron",
+      "commonNames": [
+        "बुरांश",
+        "Rhododendron arboreum"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231j-0m5sr2li",
+      "name": "Banana",
+      "commonNames": [
+        "केला",
+        "Musa acuminata"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231j-th7m3te5",
+      "name": "Brahma Kamal",
+      "commonNames": [
+        "ब्रह्म कमल",
+        "Saussurea obvallata"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231j-017wqzuw",
+      "name": "Lotus",
+      "commonNames": [
+        "कमल",
+        "Nelumbo nucifera"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231j-i1yjj0h9",
+      "name": "Henna",
+      "commonNames": [
+        "मेहंदी",
+        "Lawsonia inermis"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231j-2s5fwq75",
+      "name": "Indian Cork Tree",
+      "commonNames": [
+        "नीम चमेली",
+        "Millingtonia hortensis"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231j-jt5mnyhu",
+      "name": "Rain Tree",
+      "commonNames": [
+        "विलायती शिरीष",
+        "Samanea saman"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    },
+    {
+      "_id": "msnh231k-xtrzjoyi",
+      "name": "Ashwagandha",
+      "commonNames": [
+        "अश्वगंधा",
+        "Withania somnifera"
+      ],
+      "referenceImageUrl": "",
+      "addedBy": "u-admin-1",
+      "isActive": true,
+      "createdAt": "2026-08-10T16:54:48.289Z",
+      "updatedAt": "2026-08-10T16:54:48.289Z"
+    }
+  ],
+  "drives": [
+    {
+      "_id": "mslrsmym-a7nqqftp",
+      "name": "Ganesh Nagar Plantation Drive",
+      "date": "2026-08-15",
+      "locationName": "Ganesh Nagar Park",
+      "speciesAllowed": [],
+      "createdBy": "u-admin-1",
+      "createdAt": "2026-08-09T12:19:50.798Z",
+      "updatedAt": "2026-08-09T12:19:50.798Z"
+    }
+  ],
+  "treeLogs": [
+    {
+      "user": "msiie6ih-k90przqu",
+      "drive": null,
+      "species": "mslrsmyl-bo4jj1b5",
+      "count": 1,
+      "photoUrl": "https://res.cloudinary.com/ly1x3tmb/image/upload/v1786382946/tree-logs/tlkzi4vvnop0unscukcb.jpg",
+      "aiRawGuess": "Mangifera indica",
+      "aiConfidenceScore": 98,
+      "flaggedForReview": false,
+      "reviewedByAdmin": false,
+      "_id": "msnia8gb-g0ouwss0",
+      "createdAt": "2026-08-10T17:29:08.171Z",
+      "updatedAt": "2026-08-10T17:29:08.171Z"
+    }
+  ]
+}
