@@ -4,7 +4,7 @@ services:
     runtime: node
     plan: free
     rootDir: tree-app-backend
-    buildCommand: npm install
+    buildCommand: npm install --no-audit
     startCommand: npm start
     healthCheckPath: /api/health
     envVars:
